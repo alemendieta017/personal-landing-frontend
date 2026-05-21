@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { X, MessageCircle, Home, Phone, User } from 'lucide-react';
+import { X, Home, Phone, User } from 'lucide-react';
+import WhatsappIcon from './WhatsappIcon';
 
 interface LeadModalProps {
   isOpen: boolean;
@@ -191,7 +192,7 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName 
             type="submit"
             className="w-full mt-2 flex items-center justify-center gap-2 rounded-2xl bg-personal-blue py-3.5 px-4 text-sm font-bold text-white shadow-lg shadow-sky-400/20 hover:bg-sky-500 hover:shadow-sky-400/30 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
           >
-            <MessageCircle className="h-5 w-5 fill-current" />
+            <WhatsappIcon className="h-5 w-5" />
             Enviar Solicitud
           </button>
         </form>

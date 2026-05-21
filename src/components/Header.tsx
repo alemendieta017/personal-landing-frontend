@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Menu, X, MessageCircle, Globe, Tv, Phone, Box } from 'lucide-react'
+import { Menu, X, Globe, Tv, Phone, Box } from 'lucide-react'
+import WhatsappIcon from './WhatsappIcon'
 
 interface HeaderProps {
   onOpenLeadModal: (
@@ -93,7 +94,7 @@ export default function Header({ onOpenLeadModal }: HeaderProps) {
               onClick={handleContactClick}
               className="flex items-center gap-2 rounded-2xl bg-personal-blue hover:bg-sky-500 py-2.5 px-5 text-sm font-bold text-white shadow-md shadow-sky-400/10 hover:shadow-sky-400/25 active:scale-[0.98] transition-all cursor-pointer"
             >
-              <MessageCircle className="h-4.5 w-4.5 fill-current" />
+              <WhatsappIcon className="h-4.5 w-4.5" />
               Jessica Ciancio (Asesora)
             </button>
           </div>
@@ -136,7 +137,7 @@ export default function Header({ onOpenLeadModal }: HeaderProps) {
                 onClick={handleContactClick}
                 className="w-full flex items-center justify-center gap-2 rounded-2xl bg-personal-blue hover:bg-sky-500 py-3.5 px-4 text-base font-bold text-white shadow-md shadow-sky-400/20 active:scale-[0.98] transition-all cursor-pointer"
               >
-                <MessageCircle className="h-5 w-5 fill-current" />
+                <WhatsappIcon className="h-5 w-5" />
                 Contactar Asesora
               </button>
             </div>

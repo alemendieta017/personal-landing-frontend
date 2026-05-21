@@ -1,6 +1,7 @@
 import React from 'react';
 import { PersonalLogo } from './Header';
-import { Shield, MapPin, CheckCircle, MessageSquare } from 'lucide-react';
+import { Shield, MapPin, CheckCircle } from 'lucide-react';
+import WhatsappIcon from './WhatsappIcon';
 
 export default function Footer() {
   return (
@@ -37,7 +38,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="text-xs text-personal-blue hover:underline flex items-center gap-1.5 font-semibold mt-0.5"
                 >
-                  <MessageSquare className="h-3 w-3" />
+                  <WhatsappIcon className="h-3.5 w-3.5" />
                   +595 994 925 946
                 </a>
               </div>

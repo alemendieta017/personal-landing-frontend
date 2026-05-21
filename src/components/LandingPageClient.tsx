@@ -18,6 +18,7 @@ import {
   Star,
   Heart,
 } from 'lucide-react'
+import WhatsappIcon from './WhatsappIcon'
 import Header from './Header'
 import Footer from './Footer'
 import LeadModal from './LeadModal'
@@ -165,7 +166,7 @@ export default function LandingPageClient({
               }
               className="rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold px-8 py-4 text-sm sm:text-base transition-all border border-white/15 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
             >
-              <MessageCircle className="h-5 w-5 text-emerald-400 fill-emerald-400" />
+              <WhatsappIcon className="h-5 w-5 text-emerald-400" />
               Hablar con Jessica Ciancio
             </button>
           </div>
@@ -336,71 +337,61 @@ export default function LandingPageClient({
             {flowBlock.subtitle}
           </p>
 
-          {/* Flow Features row */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto text-left">
-            <div className="bg-white rounded-3xl p-5 text-slate-800 shadow-xl flex gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
-                <Smartphone className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="font-extrabold text-sm text-slate-900">
+          {/* Flow Features Card */}
+          <div className="mt-12 bg-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl max-w-4xl mx-auto text-slate-800">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
+                  <Smartphone className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
                   Multidispositivo
                 </h4>
-                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                  Con la App de FLOW vas a poder ver donde quieras en tu
-                  celular, tablet, PC y Chromecast.
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Con la App de FLOW vas a poder ver donde quieras en tu celular, tablet, PC y Chromecast.
                 </p>
               </div>
-            </div>
 
-            <div className="bg-white rounded-3xl p-5 text-slate-800 shadow-xl flex gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
-                <Play className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="font-extrabold text-sm text-slate-900">
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
+                  <Play className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
                   Flow se adapta a vos
                 </h4>
-                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                  Volvé a mirar, pausá, retrocedé tus programas y eventos
-                  deportivos favoritos desde el inicio.
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Volvé a mirar, pausá, retrocedé tus programas y eventos deportivos favoritos desde el inicio.
                 </p>
               </div>
-            </div>
 
-            <div className="bg-white rounded-3xl p-5 text-slate-800 shadow-xl flex gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
-                <Cloud className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="font-extrabold text-sm text-slate-900">
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
+                  <Cloud className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
                   Grabación de contenido
                 </h4>
-                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                  Podés grabar tus series y pelis favoritas en la nube y verlas
-                  hasta 3 meses después.
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Podés grabar tus series y pelis favoritas en la nube y verlas hasta 3 meses después.
                 </p>
               </div>
-            </div>
 
-            <div className="bg-white rounded-3xl p-5 text-slate-800 shadow-xl flex gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
-                <Monitor className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="font-extrabold text-sm text-slate-900">
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
+                  <Monitor className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
                   Aplicaciones integradas
                 </h4>
-                <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                  Convertí tu televisión convencional en una SmartTv con Flow y
-                  disfrutá de streaming directo.
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Convertí tu televisión convencional en una SmartTv con Flow y disfrutá de streaming directo.
                 </p>
               </div>
             </div>
           </div>
 
           {/* TV Cards plans */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {flowBlock.flowItems.map((item) => (
               <div
                 key={item.id}
@@ -411,7 +402,7 @@ export default function LandingPageClient({
                     price: `${formatGs(item.precio)} Gs.`,
                   })
                 }
-                className="bg-flow-dark rounded-[2.5rem] p-8 text-left shadow-2xl border border-neutral-900 flex flex-col justify-between flow-card-hover-effect relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-emerald-500/5 duration-300"
+                className="bg-flow-dark rounded-[2.5rem] p-6 sm:p-10 text-left shadow-2xl border border-neutral-900 flex flex-col justify-between flow-card-hover-effect relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-emerald-500/5 duration-300"
               >
                 {/* Paramount Included Badge */}
                 <div className="absolute top-6 right-6 bg-slate-950/80 border border-slate-800 text-[10px] uppercase font-bold tracking-widest text-[#00b289] px-3 py-1.5 rounded-full flex items-center gap-1.5">
@@ -477,7 +468,7 @@ export default function LandingPageClient({
                           price: `${formatGs(item.precio)} Gs.`,
                         });
                       }}
-                      className="rounded-2xl bg-flow-green hover:bg-emerald-500 text-white font-bold py-3 px-6 text-xs transition-all shadow-md shadow-emerald-500/10 cursor-pointer"
+                      className="rounded-2xl bg-flow-green hover:bg-emerald-50 text-white font-bold py-3 px-6 text-xs transition-all shadow-md shadow-emerald-500/10 cursor-pointer"
                     >
                       Lo Quiero
                     </button>
@@ -549,8 +540,73 @@ export default function LandingPageClient({
             {mobileBlock.subtitle}
           </p>
 
+          {/* Mobile Benefits Card */}
+          <div className="mt-12 bg-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl max-w-4xl mx-auto text-slate-800">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-4">
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
+                  <Phone className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
+                  Minutos Ilimitados
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Llamadas y mensajes sin límites a todas las compañías del país.
+                </p>
+              </div>
+
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center flex-shrink-0">
+                  <WhatsappIcon className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
+                  WhatsApp Gratis
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Chateá, enviá fotos y videos sin consumir tus gigas del plan.
+                </p>
+              </div>
+
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
+                  <Globe className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
+                  Roaming América
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Tus gigas te sirven para navegar en toda América como en casa.
+                </p>
+              </div>
+
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
+                  <Sparkles className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
+                  FlowPass Gratis
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  5GB adicionales exclusivos para disfrutar contenido en Flow App.
+                </p>
+              </div>
+
+              <div className="text-center flex flex-col items-center col-span-2 lg:col-span-1 mx-auto lg:mx-0">
+                <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
+                  <Smartphone className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
+                  Acumulá Gigas
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Los gigas que no uses este mes se te guardan para el próximo.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Grid of Mobile Plans */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {mobileBlock.mobile_item.map((plan) => (
               <div
                 key={plan.id}
@@ -561,7 +617,7 @@ export default function LandingPageClient({
                     price: `${formatGs(plan.precio)} Gs.`,
                   })
                 }
-                className="bg-white rounded-[2.5rem] p-8 sm:p-10 text-slate-800 shadow-2xl flex flex-col justify-between border border-slate-100 card-hover-effect relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-sky-500/10 transition-all duration-300"
+                className="bg-white rounded-[2.5rem] p-6 sm:p-10 text-slate-800 shadow-2xl flex flex-col justify-between border border-slate-100 card-hover-effect relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-sky-500/10 transition-all duration-300"
               >
                 {/* Popular badge for the middle plan */}
                 {plan.cantidad_gigabytes === '16GB' && (
@@ -570,62 +626,60 @@ export default function LandingPageClient({
                   </div>
                 )}
 
-                <div className="text-left">
-                  {/* Gigabytes Display */}
-                  <div className="inline-flex items-center justify-center h-12 px-4 rounded-2xl bg-sky-50 text-personal-blue font-black text-lg mb-6">
-                    {plan.cantidad_gigabytes}
+                <div className="text-left flex flex-col h-full justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
+                      Internet Móvil
+                    </span>
+                    <div className="flex items-baseline gap-1 mt-1">
+                      <span className="text-6xl font-black text-slate-900 tracking-tight leading-none">
+                        {plan.cantidad_gigabytes.replace(/GB/i, '')}
+                      </span>
+                      <span className="text-3xl font-black text-personal-blue">
+                        GB
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500 font-bold tracking-wide mt-1 uppercase">
+                      Para navegar
+                    </p>
                   </div>
 
-                  <h3 className="text-2xl font-black text-slate-900 leading-tight">
-                    Plan {plan.cantidad_gigabytes}
-                  </h3>
-                  <p className="text-[10px] font-bold text-slate-400 mt-1.5 uppercase tracking-wider">
-                    Conexión LTE Personal
-                  </p>
+                  {/* Price Block inspired by the flyer */}
+                  <div className="my-6 bg-personal-blue rounded-2xl py-4 px-5 text-center text-white shadow-lg shadow-sky-400/15">
+                    <p className="text-[10px] font-bold uppercase tracking-wider opacity-90">Abono mensual</p>
+                    <div className="flex items-baseline justify-center gap-1 mt-1">
+                      <span className="text-sm font-light opacity-85">Gs.</span>
+                      <span className="text-3xl font-black tracking-tight leading-none">{formatGs(plan.precio)}</span>
+                    </div>
+                  </div>
 
-                  <ul className="mt-6 space-y-3.5 border-t border-slate-100 pt-6">
-                    <li className="flex items-start gap-3 text-sm text-slate-600 font-medium leading-tight">
-                      <Check className="h-4.5 w-4.5 text-personal-blue flex-shrink-0 mt-0.5" />
-                      <span>Minutos y mensajes ilimitados para todas las compañias</span>
-                    </li>
-                    <li className="flex items-start gap-3 text-sm text-slate-600 font-medium leading-tight">
-                      <Check className="h-4.5 w-4.5 text-personal-blue flex-shrink-0 mt-0.5" />
-                      <span>WhatsApp Gratis (sin gastar gigas)</span>
-                    </li>
-                    <li className="flex items-start gap-3 text-sm text-slate-600 font-medium leading-tight">
-                      <Check className="h-4.5 w-4.5 text-personal-blue flex-shrink-0 mt-0.5" />
-                      <span>Roaming incluido en América</span>
-                    </li>
-                    <li className="flex items-start gap-3 text-sm text-slate-600 font-medium leading-tight">
-                      <Check className="h-4.5 w-4.5 text-personal-blue flex-shrink-0 mt-0.5" />
-                      <span>Acumulás los gigas que no usás</span>
-                    </li>
-                  </ul>
+                  {/* Clean highlights list */}
+                  <div className="pb-6 border-b border-slate-100 flex flex-col gap-2.5">
+                    <div className="inline-flex items-center gap-2.5 text-xs text-slate-600 font-semibold">
+                      <div className="h-1.5 w-1.5 rounded-full bg-personal-blue flex-shrink-0" />
+                      <span>Conexión LTE de alta velocidad</span>
+                    </div>
+                    <div className="inline-flex items-center gap-2.5 text-xs text-slate-600 font-semibold">
+                      <div className="h-1.5 w-1.5 rounded-full bg-personal-blue flex-shrink-0" />
+                      <span>Roaming América automático</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="mt-8 border-t border-slate-100 pt-6 text-left">
-                  <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest">
-                    Abono mensual
-                  </p>
-                  <div className="flex items-center justify-between mt-2">
-                    <p className="text-3xl font-black text-slate-900 leading-none">
-                      <span className="font-light text-slate-500 mr-1 text-2xl">Gs.</span>
-                      {formatGs(plan.precio)}
-                    </p>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleOpenModal({
-                          name: `Plan Móvil ${plan.cantidad_gigabytes}`,
-                          category: 'Telefonía Móvil',
-                          price: `${formatGs(plan.precio)} Gs.`,
-                        });
-                      }}
-                      className="rounded-2xl bg-personal-blue hover:bg-sky-500 text-white font-bold py-3 px-6 text-xs transition-all shadow-md shadow-sky-400/20 hover:scale-[1.03] active:scale-[0.97] cursor-pointer"
-                    >
-                      Lo Quiero
-                    </button>
-                  </div>
+                <div className="mt-6">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenModal({
+                        name: `Plan Móvil ${plan.cantidad_gigabytes}`,
+                        category: 'Telefonía Móvil',
+                        price: `${formatGs(plan.precio)} Gs.`,
+                      });
+                    }}
+                    className="w-full rounded-2xl bg-[#0A1C36] hover:bg-personal-blue text-white font-bold py-4 text-sm transition-all duration-300 shadow-md hover:shadow-sky-400/20 hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
+                  >
+                    Lo Quiero
+                  </button>
                 </div>
               </div>
             ))}

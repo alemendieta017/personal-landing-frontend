@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, X, Send, ArrowRight } from 'lucide-react';
+import { X, Send, ArrowRight } from 'lucide-react';
+import WhatsappIcon from './WhatsappIcon';
 
 interface WhatsappWidgetProps {
   onOpenLeadModal: (plan: { name: string; category: string; price: string } | null) => void;
@@ -172,7 +173,7 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName }: Whatsa
         {isOpen ? (
           <X className="h-6 w-6" />
         ) : (
-          <MessageCircle className="h-7 w-7 fill-current" />
+          <WhatsappIcon className="h-7 w-7" />
         )}
         
         {/* Floating badge if tooltip closed but unseen */}
