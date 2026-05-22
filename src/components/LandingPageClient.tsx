@@ -19,7 +19,7 @@ import {
   Heart,
 } from 'lucide-react'
 import WhatsappIcon from './WhatsappIcon'
-import Header from './Header'
+import Header, { PersonalLogo, FlowLogo } from './Header'
 import Footer from './Footer'
 import LeadModal from './LeadModal'
 import WhatsappWidget from './WhatsappWidget'
@@ -40,6 +40,30 @@ interface LandingPageClientProps {
 // Helper to format Guaraníes currency
 function formatGs(value: number): string {
   return value.toLocaleString('es-PY')
+}
+
+function renderTextWithLogos(
+  text: string,
+  logoColorClass: string = 'text-personal-blue',
+  logoHeightClass: string = 'h-[1.35em]'
+) {
+  if (!text) return null
+  const parts = text.split(/(personal)/i)
+  return (
+    <>
+      {parts.map((part, index) => {
+        const lower = part.toLowerCase()
+        if (lower === 'personal') {
+          return (
+            <span key={index} className="inline-flex items-center align-middle mx-1.5 -translate-y-[0.05em]">
+              <PersonalLogo className={`${logoHeightClass} ${logoColorClass} fill-current`} />
+            </span>
+          )
+        }
+        return <React.Fragment key={index}>{part}</React.Fragment>
+      })}
+    </>
+  )
 }
 
 export default function LandingPageClient({
@@ -139,8 +163,11 @@ export default function LandingPageClient({
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight max-w-4xl">
             ¡Habilitá los Servicios de{' '}
-            <span className="text-personal-blue">Personal</span> en{' '}
-            {buildingData ? buildingData.name : 'tu Edificio'}!
+            <span className="inline-flex items-center align-middle mx-2 sm:mx-3 translate-y-[0.05em]">
+              <PersonalLogo className="h-[1.8em] sm:h-[2em] text-personal-blue fill-current" />
+            </span>{' '}
+            en{' '}
+            {buildingData ? buildingData.name : 'tu Departamento'}!
           </h1>
 
           <p className="mt-6 text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl font-medium leading-relaxed">
@@ -227,10 +254,10 @@ export default function LandingPageClient({
       >
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight">
-            {internetBlock.title}
+            {renderTextWithLogos(internetBlock.title, 'text-white', 'h-[1.5em] sm:h-[1.7em]')}
           </h2>
           <p className="mt-4 text-base sm:text-lg md:text-xl text-sky-100 max-w-2xl mx-auto font-medium whitespace-pre-line">
-            {internetBlock.subtitle}
+            {renderTextWithLogos(internetBlock.subtitle, 'text-white', 'h-[1.35em]')}
           </p>
 
           {/* Plan Card Container */}
@@ -533,10 +560,10 @@ export default function LandingPageClient({
           </span>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mt-4">
-            {mobileBlock.title}
+            {renderTextWithLogos(mobileBlock.title, 'text-white', 'h-[1.5em] sm:h-[1.7em]')}
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium">
-            {mobileBlock.subtitle}
+            {renderTextWithLogos(mobileBlock.subtitle, 'text-white', 'h-[1.35em]')}
           </p>
 
           {/* Mobile Benefits Card */}
@@ -698,12 +725,10 @@ export default function LandingPageClient({
               Combos Multiplay
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mt-4 text-slate-950">
-              ¡Los Combos de Personal te convienen mucho más! 💥
+              {renderTextWithLogos("¡Los Combos de Personal te convienen mucho más! 💥", 'text-personal-blue', 'h-[1.5em] sm:h-[1.7em]')}
             </h2>
             <p className="mt-4 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
-              Combinando tus productos de Internet Fibra, Flow TV y Telefonía
-              móvil, accedés a beneficios exclusivos y duplicás tus velocidades
-              de forma automática.
+              {renderTextWithLogos("Combinando tus productos de Internet Fibra, Flow TV y Telefonía móvil, accedés a beneficios exclusivos y duplicás tus velocidades de forma automática.", 'text-personal-blue', 'h-[1.35em]')}
             </p>
           </div>
 
@@ -841,8 +866,8 @@ export default function LandingPageClient({
               <div className="flex items-start gap-2.5">
                 <Check className="h-5 w-5 text-personal-blue flex-shrink-0" />
                 <span>
-                  <strong>Duplicamos tus Gigas</strong>: En tu plan móvil de
-                  Personal, te duplicamos la capacidad de datos todos los meses.
+                  <strong>Duplicamos tus Gigas</strong>:{' '}
+                  {renderTextWithLogos("En tu plan móvil de Personal, te duplicamos la capacidad de datos todos los meses.", 'text-personal-blue', 'h-[1.35em]')}
                 </span>
               </div>
               <div className="flex items-start gap-2.5">

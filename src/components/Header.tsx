@@ -44,6 +44,24 @@ export function PersonalLogo({
   )
 }
 
+export function FlowLogo({
+  className = 'h-6 text-flow-green',
+}: {
+  className?: string
+}) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 512 512"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M412.22,83.35c112.59,102.87,89.49,289.81-39.33,368.01C182,567.23-44.01,363.57,46.78,160.1,109.44,19.67,297.79-21.21,412.22,83.35ZM348.09,143.86c-111.19-92.87-262.66,10.7-228.47,148.8,27.93,112.8,174.46,145.66,245.58,53.69,45.31-58.59,40.68-154.22-17.12-202.49Z" />
+      <polygon points="208.16 189.37 330.51 252.81 208.16 320.37 208.16 189.37" />
+    </svg>
+  )
+}
+
 export default function Header({ onOpenLeadModal }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
