@@ -45,6 +45,9 @@ export interface MobileBlockData {
 
 const STRAPI_API_URL = process.env.STRAPI_API_URL || 'http://localhost:1337';
 const STRAPI_API_KEY = process.env.STRAPI_API_KEY;
+const STRAPI_REVALIDATE_TIME = process.env.STRAPI_REVALIDATE_TIME 
+  ? parseInt(process.env.STRAPI_REVALIDATE_TIME, 10) 
+  : 60; // Default to 60 seconds
 
 // Helper to make requests to Strapi
 async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
@@ -59,7 +62,7 @@ async function fetchStrapi<T>(endpoint: string): Promise<T | null> {
     // We add cache configuration or revalidation
     const res = await fetch(url, {
       headers,
-      next: { revalidate: 60 }, // Revalidate every minute
+      next: { revalidate: STRAPI_REVALIDATE_TIME },
     });
 
     if (!res.ok) {
