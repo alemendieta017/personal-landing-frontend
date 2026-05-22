@@ -144,9 +144,8 @@ export default function LandingPageClient({
           </h1>
 
           <p className="mt-6 text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl font-medium leading-relaxed">
-            Escanear el código QR del lobby te da acceso a tarifas especiales y
-            prioridad de instalación Express en tu departamento. ¡Internet
-            Fibra, Flow TV y Planes Móviles listos hoy!
+            Descubrí los mejores planes de Internet Fibra, Flow TV y Telefonía Móvil disponibles para tu departamento.
+            Elegí la opción ideal para vos y activá tu conexión hoy mismo.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
@@ -404,14 +403,14 @@ export default function LandingPageClient({
                 }
                 className="bg-flow-dark rounded-[2.5rem] p-6 sm:p-10 text-left shadow-2xl border border-neutral-900 flex flex-col justify-between flow-card-hover-effect relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-emerald-500/5 duration-300"
               >
-                {/* Paramount Included Badge */}
-                <div className="absolute top-6 right-6 bg-slate-950/80 border border-slate-800 text-[10px] uppercase font-bold tracking-widest text-[#00b289] px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                  <Star className="h-3 w-3 fill-current" />
-                  <span>Paramount+ Incluido</span>
-                </div>
-
                 <div>
-                  <h3 className="text-xl font-bold uppercase tracking-wider text-white mt-2">
+                  {/* Paramount Included Badge */}
+                  <div className="inline-flex mb-4 bg-slate-950/80 border border-slate-800 text-[10px] uppercase font-bold tracking-widest text-flow-green px-3 py-1.5 rounded-full items-center gap-1.5">
+                    <Star className="h-3 w-3 fill-current" />
+                    <span>Paramount+ Incluido</span>
+                  </div>
+
+                  <h3 className="text-xl font-bold uppercase tracking-wider text-white">
                     {item.title}
                   </h3>
                   <p className="text-xs text-slate-400 font-semibold mt-1">
@@ -481,37 +480,37 @@ export default function LandingPageClient({
 
           {/* Premium streaming packs footer */}
           <div className="mt-16 bg-flow-dark rounded-3xl p-6 shadow-2xl border border-neutral-900 max-w-4xl mx-auto overflow-hidden">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 text-left mb-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 text-left mb-6">
               Packs Premium y plataformas de streaming opcionales:
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-slate-800 items-center text-center gap-4 sm:gap-0">
-              <div className="py-3 sm:py-0 sm:px-2">
-                <p className="text-xs font-bold text-white uppercase tracking-wider">
-                  Disney+
-                </p>
-                <p className="text-sm font-black text-flow-green mt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-slate-800 items-center text-center gap-6 sm:gap-0">
+              <div className="py-3 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
+                <div className="flex justify-center items-center h-12 mb-3">
+                  <img src="/img/disneyplus.svg" alt="Disney+" className="h-7 w-auto object-contain" />
+                </div>
+                <p className="text-sm font-black text-flow-green">
                   Gs. 99.000{' '}
                   <span className="text-[10px] text-slate-500 font-medium">
                     /mes
                   </span>
                 </p>
               </div>
-              <div className="py-3 sm:py-0 sm:px-2">
-                <p className="text-xs font-bold text-white uppercase tracking-wider">
-                  HBO Max
-                </p>
-                <p className="text-sm font-black text-flow-green mt-1">
+              <div className="py-3 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
+                <div className="flex justify-center items-center h-12 mb-3">
+                  <img src="/img/hbo.svg" alt="HBO Max" className="h-7 w-auto object-contain brightness-0 invert" />
+                </div>
+                <p className="text-sm font-black text-flow-green">
                   Gs. 49.900{' '}
                   <span className="text-[10px] text-slate-500 font-medium">
                     /mes
                   </span>
                 </p>
               </div>
-              <div className="py-3 sm:py-0 sm:px-2">
-                <p className="text-xs font-bold text-white uppercase tracking-wider">
-                  Tigo Sports
-                </p>
-                <p className="text-sm font-black text-flow-green mt-1">
+              <div className="py-3 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
+                <div className="flex justify-center items-center h-12 mb-3">
+                  <img src="/img/logo-tigo-sport.png" alt="Tigo Sports" className="h-11 w-auto object-contain" />
+                </div>
+                <p className="text-sm font-black text-flow-green">
                   Gs. 75.000{' '}
                   <span className="text-[10px] text-slate-500 font-medium">
                     /mes
