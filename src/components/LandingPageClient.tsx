@@ -431,9 +431,26 @@ export default function LandingPageClient({
       {/* Internet Hogar Section */}
       <section
         id="internet"
-        className="bg-personal-blue text-white py-20 px-4 sm:px-6 lg:px-8 relative scroll-mt-20"
+        className="bg-gradient-to-br from-[#0092C7] via-[#00b0eb] to-[#0092C7] text-white py-20 px-4 sm:px-6 lg:px-8 relative scroll-mt-20 border-b border-sky-400/20 overflow-hidden"
       >
-        <div className="mx-auto max-w-4xl text-center">
+        {/* Glow Effects */}
+        <div className="absolute top-12 left-[10%] h-72 w-72 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-12 right-[10%] h-72 w-72 rounded-full bg-sky-300/25 blur-3xl pointer-events-none" />
+
+        {/* Fiber Optic Waves SVG (White semi-transparent lines) */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none select-none">
+          <svg className="w-full h-full min-h-[600px]" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1440 600">
+            <path d="M 0 100 Q 360 80 720 150 T 1440 100" fill="none" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3" />
+            <path d="M 0 250 Q 400 350 800 200 T 1440 300" fill="none" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="2" />
+            <path d="M 0 450 Q 300 400 750 480 T 1440 420" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1.5" />
+            
+            <path d="M 200 0 L 200 600" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="0.5" strokeDasharray="5,15" />
+            <path d="M 600 0 L 600 600" fill="none" stroke="rgba(255, 255, 255, 0.1)" strokeWidth="0.5" strokeDasharray="5,15" />
+            <path d="M 1000 0 L 1000 600" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="0.5" strokeDasharray="5,15" />
+          </svg>
+        </div>
+
+        <div className="relative mx-auto max-w-4xl text-center">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-white bg-white/10 px-3.5 py-1.5 rounded-full border border-white/20 mb-5">
             Internet Fibra
           </span>
@@ -537,9 +554,26 @@ export default function LandingPageClient({
       {/* Flow Section */}
       <section
         id="flow"
-        className="bg-flow-green text-white py-20 px-4 sm:px-6 lg:px-8 relative scroll-mt-20"
+        className="bg-gradient-to-br from-[#009472] via-[#00b289] to-[#009472] text-white py-20 px-4 sm:px-6 lg:px-8 relative scroll-mt-20 border-t border-emerald-400/20 border-b border-emerald-400/20 overflow-hidden"
       >
-        <div className="mx-auto max-w-5xl text-center">
+        {/* Glow Effects */}
+        <div className="absolute top-12 left-[10%] h-72 w-72 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-12 right-[10%] h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl pointer-events-none" />
+
+        {/* Media / Flow visualizer SVG (White semi-transparent waves) */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none select-none">
+          <svg className="w-full h-full min-h-[600px]" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1440 600">
+            <path d="M 0 150 Q 400 50 800 250 T 1440 150" fill="none" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="2.5" />
+            <path d="M 0 350 Q 300 450 750 300 T 1440 380" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1.5" strokeDasharray="10,10" />
+            
+            <path d="M 120 180 L 135 190 L 120 200 Z" fill="none" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" />
+            <path d="M 1320 250 L 1335 260 L 1320 270 Z" fill="none" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" />
+            <circle cx="250" cy="420" r="8" fill="none" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="1" />
+            <circle cx="1150" cy="120" r="12" fill="none" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" />
+          </svg>
+        </div>
+
+        <div className="relative mx-auto max-w-5xl text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
             <span className="text-xs font-bold uppercase tracking-widest text-white bg-white/10 px-3.5 py-1.5 rounded-full border border-white/20">
               Flow
@@ -606,7 +640,7 @@ export default function LandingPageClient({
             </div>
           </div>
 
-          {/* TV Cards plans */}
+          {/* TV Cards plans (Restored bg-flow-dark for contrast) */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {flowBlock.flowItems.map((item) => (
               <div
