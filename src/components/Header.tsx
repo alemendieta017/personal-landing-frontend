@@ -1,13 +1,15 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Menu, X, Globe, Tv, Phone, Box } from 'lucide-react'
 import WhatsappIcon from './WhatsappIcon'
+import { AgentData } from '../lib/strapi'
 
 interface HeaderProps {
   onOpenLeadModal: (
     plan: { name: string; category: string; price: string } | null,
   ) => void
+  agentData: AgentData
 }
 
 export function PersonalLogo({
@@ -62,14 +64,29 @@ export function FlowLogo({
   )
 }
 
-export default function Header({ onOpenLeadModal }: HeaderProps) {
+export default function Header({ onOpenLeadModal, agentData }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+    // Set initial scroll state in case page is refreshed/loaded scrolled down
+    handleScroll()
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const navigation = [
+    { name: 'Combos', href: '#combos', icon: Box },
     { name: 'Internet Fibra', href: '#internet', icon: Globe },
     { name: 'Flow TV', href: '#flow', icon: Tv },
     { name: 'Móvil', href: '#movil', icon: Phone },
-    { name: 'Combos', href: '#combos', icon: Box },
   ]
 
   const handleContactClick = () => {
@@ -81,14 +98,24 @@ export default function Header({ onOpenLeadModal }: HeaderProps) {
     setMobileMenuOpen(false)
   }
 
+  const isSolid = scrolled || mobileMenuOpen
+
   return (
-    <header className="sticky top-0 z-30 w-full bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
+    <header className={`fixed top-0 left-0 right-0 z-30 w-full transition-all duration-300 ${
+      isSolid
+        ? 'bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm'
+        : 'bg-transparent border-b border-transparent'
+    }`}>
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
-        <div className="flex h-20 items-center justify-between">
+        <div className={`flex items-center justify-between transition-all duration-300 ${
+          isSolid ? 'h-16' : 'h-24'
+        }`}>
           {/* Logo */}
           <div className="flex items-center gap-2">
             <a href="#" className="flex items-center">
-              <PersonalLogo className="h-7 md:h-8 text-personal-blue" />
+              <PersonalLogo className={`h-7 md:h-8 transition-colors duration-300 ${
+                isSolid ? 'text-personal-blue' : 'text-white'
+              }`} />
             </a>
           </div>
 
@@ -98,10 +125,14 @@ export default function Header({ onOpenLeadModal }: HeaderProps) {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-bold text-slate-700 hover:text-personal-blue transition-colors relative py-2 group"
+                className={`text-sm font-bold transition-colors duration-300 relative py-2 group ${
+                  isSolid ? 'text-slate-700 hover:text-personal-blue' : 'text-white hover:text-sky-300'
+                }`}
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-personal-blue transition-all duration-300 group-hover:w-full" />
+                <span className={`absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                  isSolid ? 'bg-personal-blue' : 'bg-sky-400'
+                }`} />
               </a>
             ))}
           </div>
@@ -110,10 +141,16 @@ export default function Header({ onOpenLeadModal }: HeaderProps) {
           <div className="hidden md:flex items-center gap-4">
             <button
               onClick={handleContactClick}
-              className="flex items-center gap-2 rounded-2xl bg-personal-blue hover:bg-sky-500 py-2.5 px-5 text-sm font-bold text-white shadow-md shadow-sky-400/10 hover:shadow-sky-400/25 active:scale-[0.98] transition-all cursor-pointer"
+              className={`flex items-center gap-2 rounded-2xl py-2.5 px-5 text-sm font-bold transition-all duration-300 cursor-pointer ${
+                isSolid
+                  ? 'bg-personal-blue hover:bg-sky-500 text-white shadow-md shadow-sky-400/10 hover:shadow-sky-400/25 active:scale-[0.98]'
+                  : 'bg-white/10 text-white hover:bg-white/20 border border-white/20 active:scale-[0.98]'
+              }`}
             >
-              <WhatsappIcon className="h-4.5 w-4.5" />
-              Jessica Ciancio (Asesora)
+              <WhatsappIcon className={`h-4.5 w-4.5 transition-colors duration-300 ${
+                isSolid ? 'text-white' : 'text-emerald-400'
+              }`} />
+              {agentData.nombre} {agentData.apellido} ({agentData.genero === 'masculino' ? 'Asesor' : 'Asesora'})
             </button>
           </div>
 
@@ -121,7 +158,11 @@ export default function Header({ onOpenLeadModal }: HeaderProps) {
           <div className="flex md:hidden">
             <button
               type="button"
-              className="inline-flex items-center justify-center rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+              className={`inline-flex items-center justify-center rounded-xl p-2 transition-colors duration-300 ${
+                isSolid
+                  ? 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                  : 'text-white hover:bg-white/10 hover:text-white'
+              }`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? (
@@ -135,7 +176,7 @@ export default function Header({ onOpenLeadModal }: HeaderProps) {
 
         {/* Mobile Drawer menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-100 py-4 px-2 space-y-1.5 animate-in fade-in slide-in-from-top-4 duration-200 bg-white/95 backdrop-blur-md">
+          <div className="md:hidden border-t border-slate-100 py-4 px-2 space-y-1.5 animate-in fade-in slide-in-from-top-4 duration-200 bg-white shadow-lg rounded-b-3xl">
             {navigation.map((link) => {
               const Icon = link.icon
               return (

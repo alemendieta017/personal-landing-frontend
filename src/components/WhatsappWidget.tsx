@@ -3,13 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { X, Send, ArrowRight } from 'lucide-react';
 import WhatsappIcon from './WhatsappIcon';
+import { AgentData } from '../lib/strapi';
 
 interface WhatsappWidgetProps {
   onOpenLeadModal: (plan: { name: string; category: string; price: string } | null) => void;
   buildingName?: string;
+  agentData: AgentData;
 }
 
-export default function WhatsappWidget({ onOpenLeadModal, buildingName }: WhatsappWidgetProps) {
+export default function WhatsappWidget({ onOpenLeadModal, buildingName, agentData }: WhatsappWidgetProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
@@ -34,11 +36,11 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName }: Whatsa
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
-    // Direct redirection to Jessica's WhatsApp with user message
+    // Direct redirection to agent's WhatsApp with user message
     const buildingText = buildingName ? `del Edificio *${buildingName}*` : 'del edificio';
-    const message = `¡Hola Jessica! 👋 Soy ${buildingText}. Tengo la siguiente consulta: "${inputMessage.trim()}"`;
+    const message = `¡Hola ${agentData.nombre}! 👋 Soy ${buildingText}. Tengo la siguiente consulta: "${inputMessage.trim()}"`;
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/595994925946?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/${agentData.telefono.replace(/\D/g, '')}?text=${encodedMessage}`;
     
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
     setInputMessage('');
@@ -71,13 +73,23 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName }: Whatsa
           <div className="flex gap-3">
             {/* Avatar small */}
             <div className="relative h-10 w-10 flex-shrink-0">
-              <div className="h-10 w-10 rounded-full bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center font-bold text-sky-800">
-                JC
-              </div>
+              {agentData.profilePictureUrl ? (
+                <div className="h-10 w-10 rounded-full overflow-hidden border border-slate-200 flex items-center justify-center flex-shrink-0">
+                  <img 
+                    src={agentData.profilePictureUrl} 
+                    alt={`${agentData.nombre} ${agentData.apellido}`}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="h-10 w-10 rounded-full bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center font-bold text-sky-800 flex-shrink-0">
+                  {agentData.nombre[0]}{agentData.apellido[0]}
+                </div>
+              )}
               <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>
             <div>
-              <p className="text-xs font-bold text-slate-900">Jessica Ciancio</p>
+              <p className="text-xs font-bold text-slate-900">{agentData.nombre} {agentData.apellido}</p>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
                 {buildingName 
                   ? `¡Hola! 👋 ¿Querés habilitar Internet Fibra o Flow TV en ${buildingName}? Escribime.`
@@ -100,15 +112,24 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName }: Whatsa
           <div className="bg-personal-blue p-4 flex items-center justify-between text-white">
             <div className="flex items-center gap-3">
               <div className="relative h-11 w-11 flex-shrink-0">
-                {/* Custom representation of avatar */}
-                <div className="h-11 w-11 rounded-full bg-white/20 backdrop-blur-md overflow-hidden flex items-center justify-center font-bold text-white border border-white/10">
-                  JC
-                </div>
+                {agentData.profilePictureUrl ? (
+                  <div className="h-11 w-11 rounded-full overflow-hidden border border-white/20 flex items-center justify-center flex-shrink-0">
+                    <img 
+                      src={agentData.profilePictureUrl} 
+                      alt={`${agentData.nombre} ${agentData.apellido}`}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-11 w-11 rounded-full bg-white/20 backdrop-blur-md overflow-hidden flex items-center justify-center font-bold text-white border border-white/10 flex-shrink-0">
+                    {agentData.nombre[0]}{agentData.apellido[0]}
+                  </div>
+                )}
                 <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-personal-blue" />
               </div>
               <div>
-                <h4 className="text-sm font-bold leading-tight">Jessica Ciancio</h4>
-                <p className="text-xs text-sky-100 font-medium">Asesora Oficial de Personal</p>
+                <h4 className="text-sm font-bold leading-tight">{agentData.nombre} {agentData.apellido}</h4>
+                <p className="text-xs text-sky-100 font-medium">{agentData.genero === 'masculino' ? 'Asesor' : 'Asesora'} Oficial de Personal</p>
               </div>
             </div>
             <button 
@@ -122,8 +143,8 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName }: Whatsa
           {/* Chat Messages Body */}
           <div className="p-4 bg-slate-50 max-h-[250px] overflow-y-auto space-y-3">
             <div className="bg-white rounded-2xl rounded-tl-none p-3 text-xs text-slate-700 shadow-sm border border-slate-100/50 max-w-[85%]">
-              <p className="font-bold text-slate-800 mb-1">Jessica Ciancio</p>
-              ¡Hola! Qué gusto saludarte. Soy la asesora designada para {buildingName ? buildingName : 'tu edificio'}.
+              <p className="font-bold text-slate-800 mb-1">{agentData.nombre} {agentData.apellido}</p>
+              ¡Hola! Qué gusto saludarte. Soy {agentData.genero === 'masculino' ? 'el asesor designado' : 'la asesora designada'} para {buildingName ? buildingName : 'tu edificio'}.
             </div>
             <div className="bg-white rounded-2xl rounded-tl-none p-3 text-xs text-slate-700 shadow-sm border border-slate-100/50 max-w-[85%]">
               ¿Buscás internet fibra de alta velocidad, Flow TV o telefonía para tu departamento? Habilitamos tu cuenta en minutos.
@@ -168,7 +189,7 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName }: Whatsa
           setShowTooltip(false);
         }}
         className="h-14 w-14 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xl hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all relative z-40 cursor-pointer"
-        aria-label="Contactar a asesora por WhatsApp"
+        aria-label={`Contactar a ${agentData.genero === 'masculino' ? 'asesor' : 'asesora'} por WhatsApp`}
       >
         {isOpen ? (
           <X className="h-6 w-6" />

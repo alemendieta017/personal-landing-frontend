@@ -2,8 +2,13 @@ import React from 'react';
 import { PersonalLogo } from './Header';
 import { Shield, MapPin, CheckCircle } from 'lucide-react';
 import WhatsappIcon from './WhatsappIcon';
+import { AgentData } from '../lib/strapi';
 
-export default function Footer() {
+interface FooterProps {
+  agentData: AgentData;
+}
+
+export default function Footer({ agentData }: FooterProps) {
   return (
     <footer className="bg-personal-dark text-slate-300 font-sans border-t border-slate-800">
       
@@ -25,21 +30,33 @@ export default function Footer() {
 
           {/* Col 2: Info & Contact */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
-            <h4 className="text-sm font-bold uppercase tracking-wider text-white">Tu Asesora Comercial</h4>
+            <h4 className="text-sm font-bold uppercase tracking-wider text-white">
+              Tu {agentData.genero === 'masculino' ? 'Asesor' : 'Asesora'} Comercial
+            </h4>
             <div className="mt-1 flex flex-col sm:flex-row items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-sky-400">
-                JC
-              </div>
+              {agentData.profilePictureUrl ? (
+                <div className="h-10 w-10 rounded-full overflow-hidden border border-slate-700 flex-shrink-0">
+                  <img 
+                    src={agentData.profilePictureUrl} 
+                    alt={`${agentData.nombre} ${agentData.apellido}`}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="h-10 w-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-sky-400 flex-shrink-0">
+                  {agentData.nombre[0]}{agentData.apellido[0]}
+                </div>
+              )}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <p className="text-sm font-bold text-white">Jessica Ciancio</p>
+                <p className="text-sm font-bold text-white">{agentData.nombre} {agentData.apellido}</p>
                 <a 
-                  href="https://wa.me/595994925946" 
+                  href={`https://wa.me/${agentData.telefono.replace(/\D/g, '')}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-xs text-personal-blue hover:underline flex items-center gap-1.5 font-semibold mt-0.5"
                 >
                   <WhatsappIcon className="h-3.5 w-3.5" />
-                  +595 994 925 946
+                  {agentData.telefono}
                 </a>
               </div>
             </div>
@@ -55,10 +72,7 @@ export default function Footer() {
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
               La fibra óptica de Personal está calificada como la más rápida de Paraguay. Comprobado por usuarios independientes y certificado internacionalmente por <strong>Ookla® Speedtest®</strong>.
             </p>
-            <div className="flex items-center gap-2 text-xs text-slate-400 mt-1">
-              <Shield className="h-4 w-4 text-emerald-400" />
-              <span>Conexión 100% fibra simétrica</span>
-            </div>
+
           </div>
 
         </div>

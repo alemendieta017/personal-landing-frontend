@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { X, Home, Phone, User } from 'lucide-react';
 import WhatsappIcon from './WhatsappIcon';
 
+import { AgentData } from '../lib/strapi';
+
 interface LeadModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -13,9 +15,10 @@ interface LeadModalProps {
     price: string;
   } | null;
   buildingName?: string;
+  agentData: AgentData;
 }
 
-export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName }: LeadModalProps) {
+export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName, agentData }: LeadModalProps) {
   const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('');
   const [depto, setDepto] = useState('');
@@ -49,14 +52,14 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName 
 
     // Format WhatsApp message
     const planText = selectedPlan
-      ? `el plan de *${selectedPlan.category}*: *${selectedPlan.name}* (por Gs. ${selectedPlan.price})`
+      ? `el plan de *${selectedPlan.category}*: *${selectedPlan.name}* (${selectedPlan.price === 'Prioritario' ? 'Prioritario' : `por Gs. ${selectedPlan.price}`})`
       : 'un plan de servicios de Personal';
 
     const buildingText = buildingName ? `de *${buildingName}*` : 'del edificio';
-    const message = `¡Hola Jessica! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, vivo en el departamento *${depto.trim()}* (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}. ¿Me podrías ayudar con la cobertura e instalación?`;
+    const message = `¡Hola ${agentData.nombre}! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, vivo en el departamento *${depto.trim()}* (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}. ¿Me podrías ayudar con la cobertura e instalación?`;
     
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/595994925946?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/${agentData.telefono.replace(/\D/g, '')}?text=${encodedMessage}`;
 
     // Redirect to WhatsApp
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
@@ -98,7 +101,7 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName 
           ¡Excelente elección! 🚀
         </h3>
         <p className="text-sm text-slate-500 mb-6">
-          Completá tus datos para que la asesora **Jessica Ciancio** gestione la instalación inmediata en tu departamento.
+          Completá tus datos para que {agentData.genero === 'masculino' ? 'el asesor' : 'la asesora'} **{agentData.nombre} {agentData.apellido}** gestione la instalación inmediata en tu departamento.
         </p>
 
         {/* Selected Plan Summary Box */}
@@ -110,7 +113,7 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName 
                 {selectedPlan.name}
               </span>
               <span className="text-sm font-semibold text-personal-blue">
-                Gs. {selectedPlan.price}
+                {selectedPlan.price === 'Prioritario' ? 'Prioritario' : `Gs. ${selectedPlan.price}`}
               </span>
             </div>
             <span className="text-xs text-slate-500 font-medium">

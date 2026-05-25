@@ -43,6 +43,29 @@ export interface MobileBlockData {
   mobile_item: MobileItem[];
 }
 
+export interface ComboItem {
+  id: number;
+  name: string;
+  price: number;
+  type: 'dos_productos' | 'tres_productos';
+  internetSpeed: string;
+  mobileData?: string;
+  includesFlow: boolean;
+  badge?: string;
+  isPopular: boolean;
+  originalInternetSpeed?: string;
+  originalMobileData?: string;
+}
+
+export interface ComboBlockData {
+  id: number;
+  documentId: string;
+  title: string;
+  subtitle: string;
+  ComboItem: ComboItem[];
+}
+
+
 const STRAPI_API_URL = process.env.STRAPI_API_URL || 'http://localhost:1337';
 const STRAPI_API_KEY = process.env.STRAPI_API_KEY;
 const STRAPI_REVALIDATE_TIME = process.env.STRAPI_REVALIDATE_TIME 
@@ -116,7 +139,125 @@ export const FALLBACK_MOBILE: MobileBlockData = {
   ],
 };
 
+export const FALLBACK_COMBO: ComboBlockData = {
+  id: 0,
+  documentId: 'fallback-combo',
+  title: 'Armá tu Combo y Multiplicá tus Beneficios',
+  subtitle: 'Duplicamos la velocidad de tu internet y los gigas de tu línea móvil al combinar tus servicios.',
+  ComboItem: [
+    {
+      id: 1,
+      name: "Internet 400 Mbps + Flow",
+      price: 185000,
+      type: "dos_productos",
+      internetSpeed: "800 Mbps",
+      mobileData: "",
+      includesFlow: true,
+      badge: "¡Velocidad duplicada de 400Mbps a 800Mbps!",
+      isPopular: false,
+      originalInternetSpeed: "400 Mbps",
+      originalMobileData: ""
+    },
+    {
+      id: 2,
+      name: "Internet 800 Mbps + Flow",
+      price: 235000,
+      type: "dos_productos",
+      internetSpeed: "1 Gbps",
+      mobileData: "",
+      includesFlow: true,
+      badge: "¡Velocidad duplicada de 800Mbps a 1 Gbps!",
+      isPopular: false,
+      originalInternetSpeed: "800 Mbps",
+      originalMobileData: ""
+    },
+    {
+      id: 3,
+      name: "Internet 400 Mbps + Plan móvil 18 GB",
+      price: 165000,
+      type: "dos_productos",
+      internetSpeed: "800 Mbps",
+      mobileData: "36 GB",
+      includesFlow: false,
+      badge: "¡Velocidad a 800Mbps y gigas a 36GB!",
+      isPopular: false,
+      originalInternetSpeed: "400 Mbps",
+      originalMobileData: "18 GB"
+    },
+    {
+      id: 4,
+      name: "Internet 800 Mbps + Plan móvil 32 GB",
+      price: 235000,
+      type: "dos_productos",
+      internetSpeed: "1 Gbps",
+      mobileData: "64 GB",
+      includesFlow: false,
+      badge: "¡Velocidad a 1 Gbps y gigas a 64GB!",
+      isPopular: false,
+      originalInternetSpeed: "800 Mbps",
+      originalMobileData: "32 GB"
+    },
+    {
+      id: 5,
+      name: "Internet 400 Mbps + Flow + Plan móvil 18 GB",
+      price: 250000,
+      type: "tres_productos",
+      internetSpeed: "800 Mbps",
+      mobileData: "36 GB",
+      includesFlow: true,
+      badge: "¡Internet a 800Mbps y gigas a 36GB!",
+      isPopular: false,
+      originalInternetSpeed: "400 Mbps",
+      originalMobileData: "18 GB"
+    },
+    {
+      id: 6,
+      name: "Internet 400 Mbps + Flow + Plan móvil 32 GB",
+      price: 270000,
+      type: "tres_productos",
+      internetSpeed: "800 Mbps",
+      mobileData: "64 GB",
+      includesFlow: true,
+      badge: "¡Internet a 800Mbps y gigas a 64GB!",
+      isPopular: true,
+      originalInternetSpeed: "400 Mbps",
+      originalMobileData: "32 GB"
+    },
+    {
+      id: 7,
+      name: "Internet 800 Mbps + Flow + Plan móvil 32 GB",
+      price: 320000,
+      type: "tres_productos",
+      internetSpeed: "1 Gbps",
+      mobileData: "64 GB",
+      includesFlow: true,
+      badge: "¡Internet a 1 Gbps y gigas a 64GB!",
+      isPopular: true,
+      originalInternetSpeed: "800 Mbps",
+      originalMobileData: "32 GB"
+    },
+    {
+      id: 8,
+      name: "Internet 800 Mbps + Flow + Plan móvil 18 GB",
+      price: 300000,
+      type: "tres_productos",
+      internetSpeed: "1 Gbps",
+      mobileData: "36 GB",
+      includesFlow: true,
+      badge: "¡Internet a 1 Gbps y gigas a 36GB!",
+      isPopular: false,
+      originalInternetSpeed: "800 Mbps",
+      originalMobileData: "18 GB"
+    }
+  ]
+};
+
 // API Functions
+export async function getComboBlock(): Promise<ComboBlockData> {
+  const data = await fetchStrapi<ComboBlockData>('combo?populate=*');
+  return data || FALLBACK_COMBO;
+}
+
 export async function getInternetBlock(): Promise<InternetBlockData> {
   const data = await fetchStrapi<InternetBlockData>('internet-block?populate=*');
   return data || FALLBACK_INTERNET;
@@ -147,4 +288,54 @@ export async function getBuildingByCode(code: string): Promise<BuildingData | nu
   }
   return null;
 }
+
+export interface AgentData {
+  id: number;
+  documentId: string;
+  nombre: string;
+  apellido: string;
+  telefono: string;
+  genero: 'femenino' | 'masculino';
+  profilePictureUrl?: string | null;
+}
+
+export const FALLBACK_AGENT: AgentData = {
+  id: 0,
+  documentId: 'fallback-agent',
+  nombre: 'Jessica',
+  apellido: 'Ciancio',
+  telefono: '+595 994 925 946',
+  genero: 'femenino',
+  profilePictureUrl: null,
+};
+
+export async function getAgentData(): Promise<AgentData> {
+  const rawData = await fetchStrapi<any>('agent?populate=*');
+  if (!rawData) return FALLBACK_AGENT;
+  
+  return {
+    id: rawData.id,
+    documentId: rawData.documentId,
+    nombre: rawData.nombre,
+    apellido: rawData.apellido,
+    telefono: rawData.telefono,
+    genero: rawData.genero,
+    profilePictureUrl: rawData.foto_de_perfil ? getStrapiMediaUrl(rawData.foto_de_perfil.url) : null,
+  };
+}
+
+export function getStrapiMediaUrl(url: string | undefined): string | null {
+  if (!url) return null;
+  if (url.startsWith('/uploads/')) {
+    return `/api/media${url}`;
+  }
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    if (url.includes('http://api:1337/uploads/')) {
+      return url.replace('http://api:1337', '/api/media');
+    }
+    return url;
+  }
+  return url;
+}
+
 

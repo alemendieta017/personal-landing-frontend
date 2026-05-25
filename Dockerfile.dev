@@ -1,0 +1,21 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy dependency configuration files
+COPY package.json package-lock.json ./
+
+# Install dependencies inside the container
+RUN npm install
+
+# Copy application files (overwritten by volume mounting in docker-compose for dev)
+COPY . .
+
+ENV NODE_ENV=development
+# Hostname must be 0.0.0.0 for Next.js to bind to all interfaces inside Docker
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
