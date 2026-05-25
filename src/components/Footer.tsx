@@ -1,6 +1,5 @@
 import React from 'react';
 import { PersonalLogo } from './Header';
-import { Shield, MapPin, CheckCircle } from 'lucide-react';
 import WhatsappIcon from './WhatsappIcon';
 import { AgentData } from '../lib/strapi';
 
@@ -19,23 +18,16 @@ export default function Footer({ agentData }: FooterProps) {
           {/* Col 1: Branding */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-4">
             <PersonalLogo className="h-7 text-white self-center md:self-start" />
-            <p className="text-sm text-slate-400 max-w-sm mt-2 leading-relaxed">
-              Propuesta comercial exclusiva de servicios hogar y móvil para inquilinos y copropietarios del edificio residencial.
-            </p>
-            <div className="flex items-center gap-2 text-xs text-sky-400 font-semibold mt-1">
-              <CheckCircle className="h-4 w-4" />
-              <span>Soporte e instalación prioritaria</span>
-            </div>
           </div>
 
           {/* Col 2: Info & Contact */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3">
             <h4 className="text-sm font-bold uppercase tracking-wider text-white">
-              Tu {agentData.genero === 'masculino' ? 'Asesor' : 'Asesora'} Comercial
+              Tu {agentData.genero === 'masculino' ? 'Ejecutivo' : 'Ejecutiva'} De Ventas
             </h4>
-            <div className="mt-1 flex flex-col sm:flex-row items-center gap-3">
+            <div className="mt-2 flex flex-col sm:flex-row items-center gap-5">
               {agentData.profilePictureUrl ? (
-                <div className="h-10 w-10 rounded-full overflow-hidden border border-slate-700 flex-shrink-0">
+                <div className="h-24 w-24 rounded-full overflow-hidden border border-slate-700 flex-shrink-0 shadow-md">
                   <img 
                     src={agentData.profilePictureUrl} 
                     alt={`${agentData.nombre} ${agentData.apellido}`}
@@ -43,26 +35,22 @@ export default function Footer({ agentData }: FooterProps) {
                   />
                 </div>
               ) : (
-                <div className="h-10 w-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-sky-400 flex-shrink-0">
+                <div className="h-24 w-24 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-sky-400 text-3xl flex-shrink-0 shadow-md">
                   {agentData.nombre[0]}{agentData.apellido[0]}
                 </div>
               )}
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <p className="text-sm font-bold text-white">{agentData.nombre} {agentData.apellido}</p>
+                <p className="text-lg font-extrabold text-white">{agentData.nombre} {agentData.apellido}</p>
                 <a 
                   href={`https://wa.me/${agentData.telefono.replace(/\D/g, '')}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-xs text-personal-blue hover:underline flex items-center gap-1.5 font-semibold mt-0.5"
+                  className="text-base text-personal-blue hover:underline flex items-center gap-2 font-bold mt-1.5"
                 >
-                  <WhatsappIcon className="h-3.5 w-3.5" />
+                  <WhatsappIcon className="h-5 w-5" />
                   {agentData.telefono}
                 </a>
               </div>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-slate-400 mt-2">
-              <MapPin className="h-4 w-4 text-slate-500" />
-              <span>Instalación directa en el departamento</span>
             </div>
           </div>
 

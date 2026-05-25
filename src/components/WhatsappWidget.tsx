@@ -129,7 +129,7 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName, agentDat
               </div>
               <div>
                 <h4 className="text-sm font-bold leading-tight">{agentData.nombre} {agentData.apellido}</h4>
-                <p className="text-xs text-sky-100 font-medium">{agentData.genero === 'masculino' ? 'Asesor' : 'Asesora'} Oficial de Personal</p>
+                <p className="text-xs text-sky-100 font-medium">{agentData.genero === 'masculino' ? 'Ejecutivo' : 'Ejecutiva'} Oficial de Personal</p>
               </div>
             </div>
             <button 
@@ -144,10 +144,7 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName, agentDat
           <div className="p-4 bg-slate-50 max-h-[250px] overflow-y-auto space-y-3">
             <div className="bg-white rounded-2xl rounded-tl-none p-3 text-xs text-slate-700 shadow-sm border border-slate-100/50 max-w-[85%]">
               <p className="font-bold text-slate-800 mb-1">{agentData.nombre} {agentData.apellido}</p>
-              ¡Hola! Qué gusto saludarte. Soy {agentData.genero === 'masculino' ? 'el asesor designado' : 'la asesora designada'} para {buildingName ? buildingName : 'tu edificio'}.
-            </div>
-            <div className="bg-white rounded-2xl rounded-tl-none p-3 text-xs text-slate-700 shadow-sm border border-slate-100/50 max-w-[85%]">
-              ¿Buscás internet fibra de alta velocidad, Flow TV o telefonía para tu departamento? Habilitamos tu cuenta en minutos.
+              ¡Hola! Qué gusto saludarte. Soy {agentData.genero === 'masculino' ? 'el ejecutivo designado' : 'la ejecutiva designada'} para {buildingName ? buildingName : 'tu edificio'}. ¿En qué puedo ayudarte?
             </div>
 
             {/* Quick Actions */}
@@ -189,7 +186,7 @@ export default function WhatsappWidget({ onOpenLeadModal, buildingName, agentDat
           setShowTooltip(false);
         }}
         className="h-14 w-14 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-xl hover:bg-emerald-600 hover:scale-105 active:scale-95 transition-all relative z-40 cursor-pointer"
-        aria-label={`Contactar a ${agentData.genero === 'masculino' ? 'asesor' : 'asesora'} por WhatsApp`}
+        aria-label={`Contactar a ${agentData.genero === 'masculino' ? 'ejecutivo' : 'ejecutiva'} por WhatsApp`}
       >
         {isOpen ? (
           <X className="h-6 w-6" />

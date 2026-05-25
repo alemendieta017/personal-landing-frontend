@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Globe,
   Tv,
@@ -17,9 +17,10 @@ import {
   ArrowRight,
   Star,
   Heart,
+  Zap,
 } from 'lucide-react'
 import WhatsappIcon from './WhatsappIcon'
-import Header, { PersonalLogo, FlowLogo } from './Header'
+import Header, { FlowLogo } from './Header'
 import Footer from './Footer'
 import LeadModal from './LeadModal'
 import WhatsappWidget from './WhatsappWidget'
@@ -45,30 +46,6 @@ interface LandingPageClientProps {
 function formatGs(value: number): string {
   if (value === undefined || value === null) return '0'
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-}
-
-function renderTextWithLogos(
-  text: string,
-  logoColorClass: string = 'text-personal-blue',
-  logoHeightClass: string = 'h-[1.35em]'
-) {
-  if (!text) return null
-  const parts = text.split(/(personal)/i)
-  return (
-    <>
-      {parts.map((part, index) => {
-        const lower = part.toLowerCase()
-        if (lower === 'personal') {
-          return (
-            <span key={index} className="inline-flex items-center align-middle mx-1.5 -translate-y-[0.05em]">
-              <PersonalLogo className={`${logoHeightClass} ${logoColorClass} fill-current`} />
-            </span>
-          )
-        }
-        return <React.Fragment key={index}>{part}</React.Fragment>
-      })}
-    </>
-  )
 }
 
 export default function LandingPageClient({
@@ -122,13 +99,36 @@ export default function LandingPageClient({
   const [selectedComboType, setSelectedComboType] = useState<'dos_productos' | 'tres_productos'>('tres_productos')
   const combosData = comboBlock?.ComboItem || []
 
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const [shortcutsSticky, setShortcutsSticky] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShortcutsSticky(!entry.isIntersecting)
+      },
+      {
+        threshold: [0],
+        rootMargin: '0px 0px 0px 0px',
+      }
+    )
+
+    if (sentinelRef.current) {
+      observer.observe(sentinelRef.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800 antialiased selection:bg-personal-blue selection:text-white">
       {/* Sticky Header */}
       <Header onOpenLeadModal={handleOpenModal} agentData={agentData} />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#0A1C36] via-[#0C2346] to-[#0A1C36] text-white pt-32 sm:pt-40 pb-20 px-4 sm:px-6 lg:px-8 border-b border-sky-950">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#0A1C36] via-[#0C2346] to-[#0A1C36] text-white pt-28 sm:pt-36 pb-20 px-4 sm:px-6 lg:px-8 border-b border-sky-950">
         {/* Glow Effects */}
         <div className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full bg-personal-blue/20 blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
@@ -136,94 +136,77 @@ export default function LandingPageClient({
         <div className="relative mx-auto max-w-5xl text-center flex flex-col items-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-sky-500/10 px-4 py-1.5 text-xs font-semibold text-personal-blue border border-sky-500/20 mb-6 animate-pulse">
             <Sparkles className="h-3.5 w-3.5" />
-            <span>Propuesta Comercial para tu Departamento</span>
+            <span>Propuesta Comercial Exclusiva</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight max-w-4xl">
-            ¡Habilitá los Servicios de{' '}
-            <span className="inline-flex items-center align-middle mx-2 sm:mx-3 translate-y-[0.05em]">
-              <PersonalLogo className="h-[1.8em] sm:h-[2em] text-personal-blue fill-current" />
-            </span>{' '}
-            en{' '}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] max-w-4xl">
+            Aprovecha las promociones de {' '}
+            <span className="text-personal-blue">Personal</span> para{' '}
             {buildingData ? buildingData.name : 'tu Departamento'}!
           </h1>
-
-          <p className="mt-6 text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl font-medium leading-relaxed">
-            Descubrí los mejores planes de Internet Fibra, Flow TV y Telefonía Móvil disponibles para tu departamento.
-            Elegí la opción ideal para vos y activá tu conexión hoy mismo.
-          </p>
-
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-            <a
-              href="#combos"
-              className="rounded-2xl bg-personal-blue hover:bg-sky-500 text-white font-bold px-8 py-4 text-sm sm:text-base transition-all shadow-lg shadow-sky-400/20 hover:shadow-sky-400/30 hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
-            >
-              Ver Combos de Personal
-            </a>
-            <button
-              onClick={() =>
-                handleOpenModal({
-                  name: 'Consulta de Cobertura Edificio',
-                  category: 'Instalación Express',
-                  price: 'Prioritario',
-                })
-              }
-              className="rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold px-8 py-4 text-sm sm:text-base transition-all border border-white/15 hover:scale-[1.02] active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
-            >
-              <WhatsappIcon className="h-5 w-5 text-emerald-400" />
-              Hablar con Jessica Ciancio
-            </button>
-          </div>
-
-          {/* Quick Menu Tabs */}
-          <div className="mt-16 w-full max-w-3xl grid grid-cols-2 md:grid-cols-4 bg-white/5 backdrop-blur-md rounded-3xl p-3 md:p-2 border border-white/10 shadow-2xl gap-2 md:gap-0">
-            <a
-              href="#combos"
-              className="flex flex-col items-center gap-2 py-3 rounded-2xl hover:bg-white/5 transition-all text-slate-200 hover:text-white group"
-            >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform p-2.5">
-                <img src="/img/shortcuts/combos.svg" alt="Combos" className="h-full w-full object-contain" />
-              </div>
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                Combos
-              </span>
-            </a>
-            <a
-              href="#internet"
-              className="flex flex-col items-center gap-2 py-3 rounded-2xl hover:bg-white/5 transition-all text-slate-200 hover:text-white group"
-            >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform p-2.5">
-                <img src="/img/shortcuts/fibra.svg" alt="Fibra" className="h-full w-full object-contain" />
-              </div>
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                Fibra
-              </span>
-            </a>
-            <a
-              href="#flow"
-              className="flex flex-col items-center gap-2 py-3 rounded-2xl hover:bg-white/5 transition-all text-slate-200 hover:text-white group"
-            >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform p-2.5">
-                <img src="/img/shortcuts/flow.svg" alt="Flow" className="h-full w-full object-contain" />
-              </div>
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                Flow
-              </span>
-            </a>
-            <a
-              href="#movil"
-              className="flex flex-col items-center gap-2 py-3 rounded-2xl hover:bg-white/5 transition-all text-slate-200 hover:text-white group"
-            >
-              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform p-2.5">
-                <img src="/img/shortcuts/movil.svg" alt="Móvil" className="h-full w-full object-contain" />
-              </div>
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
-                Móvil
-              </span>
-            </a>
-          </div>
         </div>
+
+        {/* Sentinel for sticky shortcut bar */}
+        <div ref={sentinelRef} className="absolute bottom-0 left-0 right-0 h-px pointer-events-none" />
       </section>
+
+      {/* Sticky Quick Menu Tabs Wrapper */}
+      <div className={`sticky top-0 z-20 w-full flex justify-center px-4 transition-all duration-300 ${
+        shortcutsSticky
+          ? 'py-3 bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-md'
+          : '-mt-10 mb-6 bg-transparent'
+      }`}>
+        <div className={`w-full max-w-lg grid grid-cols-4 p-2 gap-2 transition-all duration-300 ${
+          shortcutsSticky
+            ? 'bg-transparent border-transparent'
+            : 'bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-950/20'
+        }`}>
+          <a
+            href="#combos"
+            className="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-slate-50 transition-all text-slate-700 hover:text-personal-blue group"
+          >
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shadow-inner group-hover:scale-105 group-hover:bg-white group-hover:shadow-md transition-all duration-300 p-2 sm:p-2.5">
+              <img src="/img/shortcuts/combos.svg" alt="Combos" className="h-full w-full object-contain" />
+            </div>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider">
+              Combos
+            </span>
+          </a>
+          <a
+            href="#internet"
+            className="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-slate-50 transition-all text-slate-700 hover:text-personal-blue group"
+          >
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shadow-inner group-hover:scale-105 group-hover:bg-white group-hover:shadow-md transition-all duration-300 p-2 sm:p-2.5">
+              <img src="/img/shortcuts/fibra.svg" alt="Fibra" className="h-full w-full object-contain" />
+            </div>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider">
+              Fibra
+            </span>
+          </a>
+          <a
+            href="#flow"
+            className="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-slate-50 transition-all text-slate-700 hover:text-personal-blue group"
+          >
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shadow-inner group-hover:scale-105 group-hover:bg-white group-hover:shadow-md transition-all duration-300 p-2 sm:p-2.5">
+              <img src="/img/shortcuts/flow.svg" alt="Flow" className="h-full w-full object-contain" />
+            </div>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider">
+              Flow
+            </span>
+          </a>
+          <a
+            href="#movil"
+            className="flex flex-col items-center gap-1.5 py-2.5 rounded-2xl hover:bg-slate-50 transition-all text-slate-700 hover:text-personal-blue group"
+          >
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shadow-inner group-hover:scale-105 group-hover:bg-white group-hover:shadow-md transition-all duration-300 p-2 sm:p-2.5">
+              <img src="/img/shortcuts/movil.svg" alt="Móvil" className="h-full w-full object-contain" />
+            </div>
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-wider">
+              Móvil
+            </span>
+          </a>
+        </div>
+      </div>
 
       {/* Combos Section (From flyer details) */}
       <section
@@ -236,10 +219,10 @@ export default function LandingPageClient({
               Combos de Personal
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mt-5 text-slate-950">
-              {renderTextWithLogos(comboBlock?.title || "¡Los Combos de Personal te convienen mucho más! 💥", 'text-personal-blue', 'h-[1.5em] sm:h-[1.7em]')}
+              {comboBlock?.title || "¡Los Combos de Personal te convienen mucho más! 💥"}
             </h2>
             <p className="mt-4 text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
-              {renderTextWithLogos(comboBlock?.subtitle || "Combinando tus productos de Internet Fibra, Flow TV y Telefonía móvil, accedés a beneficios exclusivos y duplicás tus velocidades de forma automática.", 'text-personal-blue', 'h-[1.35em]')}
+              {comboBlock?.subtitle || "Combinando tus productos de Internet Fibra, Flow TV y Telefonía móvil, accedés a beneficios exclusivos y duplicás tus velocidades de forma automática."}
             </p>
           </div>
 
@@ -254,7 +237,7 @@ export default function LandingPageClient({
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                🔥 Combo Triple
+                🔥 Combos Triple
               </button>
               <button
                 onClick={() => setSelectedComboType('dos_productos')}
@@ -264,7 +247,7 @@ export default function LandingPageClient({
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                Combo Doble
+                Combos Doble
               </button>
             </div>
           </div>
@@ -353,7 +336,7 @@ export default function LandingPageClient({
                                 Televisión Digital
                               </span>
                               <span className={`text-sm font-extrabold ${combo.isPopular ? 'text-white' : 'text-slate-900'}`}>
-                                Flow TV Incluido
+                                Flow TV
                               </span>
                             </div>
                           </div>
@@ -442,49 +425,6 @@ export default function LandingPageClient({
               })}
           </div>
 
-          {/* Combos bullet checklist flyer */}
-          <div className="mt-16 bg-white rounded-[2.5rem] p-8 sm:p-10 shadow-xl border border-slate-200/60 max-w-4xl mx-auto text-left relative overflow-hidden">
-            <div className="absolute top-0 right-0 h-40 w-40 bg-personal-blue/5 rounded-full blur-3xl pointer-events-none" />
-            <h4 className="text-base font-black uppercase tracking-wider text-[#0c2346] mb-6 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-personal-blue animate-pulse" />
-              <span>¿Por qué te conviene combinar tus servicios?</span>
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600 leading-relaxed font-semibold">
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-100">
-                  <Check className="h-4 w-4 text-emerald-500" />
-                </div>
-                <span>
-                  <strong>Doble Mbps de Internet</strong>: Al combinar con Flow o Plan Móvil, duplicamos la velocidad de tu fibra gratis hasta 1Gbps.
-                </span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-100">
-                  <Check className="h-4 w-4 text-emerald-500" />
-                </div>
-                <span>
-                  <strong>Duplicamos tus Gigas</strong>:{' '}
-                  {renderTextWithLogos("En tu plan móvil de Personal, te duplicamos la capacidad de datos (gigas) todos los meses de forma permanente.", 'text-personal-blue', 'h-[1.35em]')}
-                </span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-100">
-                  <Check className="h-4 w-4 text-emerald-500" />
-                </div>
-                <span>
-                  <strong>Factura Única</strong>: Mayor comodidad para controlar tus gastos con una sola boleta consolidada para todos tus servicios.
-                </span>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-6 w-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-100">
-                  <Check className="h-4 w-4 text-emerald-500" />
-                </div>
-                <span>
-                  <strong>Ahorro Garantizado</strong>: Contratar los servicios en combo es mucho más económico que pagarlos por separado en cuentas independientes.
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -494,11 +434,30 @@ export default function LandingPageClient({
         className="bg-personal-blue text-white py-20 px-4 sm:px-6 lg:px-8 relative scroll-mt-20"
       >
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight">
-            {renderTextWithLogos(internetBlock.title, 'text-white', 'h-[1.5em] sm:h-[1.7em]')}
+          <span className="inline-block text-xs font-bold uppercase tracking-widest text-white bg-white/10 px-3.5 py-1.5 rounded-full border border-white/20 mb-5">
+            Internet Fibra
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
+            {(() => {
+              if (!internetBlock.title) return null;
+              const parts = internetBlock.title.split(/(personal)/i);
+              return parts.map((part, index) => {
+                if (part.toLowerCase() === 'personal') {
+                  return (
+                    <span 
+                      key={index} 
+                      className="bg-personal-dark text-personal-blue px-2.5 py-0.5 rounded-lg mx-1 inline-block align-middle"
+                    >
+                      {part}
+                    </span>
+                  );
+                }
+                return part;
+              });
+            })()}
           </h2>
           <p className="mt-4 text-base sm:text-lg md:text-xl text-sky-100 max-w-2xl mx-auto font-medium whitespace-pre-line">
-            {renderTextWithLogos(internetBlock.subtitle, 'text-white', 'h-[1.35em]')}
+            {internetBlock.subtitle}
           </p>
 
           {/* Plan Card Container */}
@@ -571,16 +530,6 @@ export default function LandingPageClient({
                 );
               })}
             </div>
-
-            <div className="mt-8 text-center bg-white/5 rounded-2xl p-4 border border-white/5">
-              <p className="text-xs sm:text-sm text-sky-200 font-semibold flex items-center justify-center gap-2">
-                <Info className="h-4 w-4 flex-shrink-0" />
-                <span>
-                  Instalación sin costo de cableado interno en departamentos.
-                  Sujeto a aprobación crediticia.
-                </span>
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -592,8 +541,8 @@ export default function LandingPageClient({
       >
         <div className="mx-auto max-w-5xl text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#1c1c1e] bg-white px-3 py-1 rounded-full shadow-sm">
-              Televisión Digital
+            <span className="text-xs font-bold uppercase tracking-widest text-white bg-white/10 px-3.5 py-1.5 rounded-full border border-white/20">
+              Flow
             </span>
           </div>
 
@@ -709,6 +658,14 @@ export default function LandingPageClient({
                           : 'Acceso directo mediante App en Smart TV y dispositivos.'}
                       </span>
                     </li>
+                    {item.type !== 'con_decodificador' && (
+                      <li className="flex items-start gap-2.5 text-[10px] text-slate-400 bg-black/30 p-3 rounded-xl border border-white/5 mt-4">
+                        <Info className="h-4 w-4 text-flow-green flex-shrink-0 mt-0.5" />
+                        <span>
+                          La App de Flow requiere dispositivos con Android 8.0 o superior para su funcionamiento.
+                        </span>
+                      </li>
+                    )}
                   </ul>
                 </div>
 
@@ -751,36 +708,36 @@ export default function LandingPageClient({
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 text-left mb-6">
               Packs Premium y plataformas de streaming opcionales:
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-slate-800 items-center text-center gap-6 sm:gap-0">
-              <div className="py-3 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
-                <div className="flex justify-center items-center h-12 mb-3">
-                  <img src="/img/disneyplus.svg" alt="Disney+" className="h-7 w-auto object-contain" />
+            <div className="grid grid-cols-3 divide-x divide-slate-800 items-center text-center">
+              <div className="py-2 px-1 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
+                <div className="flex justify-center items-center h-8 sm:h-12 mb-2 sm:mb-3">
+                  <img src="/img/disneyplus.svg" alt="Disney+" className="h-5 sm:h-7 w-auto object-contain" />
                 </div>
-                <p className="text-sm font-black text-flow-green">
-                  Gs. 99.000{' '}
-                  <span className="text-[10px] text-slate-500 font-medium">
+                <p className="text-xs sm:text-sm font-black text-flow-green flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1">
+                  <span>Gs. 99.000</span>{' '}
+                  <span className="text-[9px] sm:text-[10px] text-slate-500 font-medium">
                     /mes
                   </span>
                 </p>
               </div>
-              <div className="py-3 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
-                <div className="flex justify-center items-center h-12 mb-3">
-                  <img src="/img/hbo.svg" alt="HBO Max" className="h-7 w-auto object-contain brightness-0 invert" />
+              <div className="py-2 px-1 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
+                <div className="flex justify-center items-center h-8 sm:h-12 mb-2 sm:mb-3">
+                  <img src="/img/hbo.svg" alt="HBO Max" className="h-5 sm:h-7 w-auto object-contain brightness-0 invert" />
                 </div>
-                <p className="text-sm font-black text-flow-green">
-                  Gs. 49.900{' '}
-                  <span className="text-[10px] text-slate-500 font-medium">
+                <p className="text-xs sm:text-sm font-black text-flow-green flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1">
+                  <span>Gs. 49.900</span>{' '}
+                  <span className="text-[9px] sm:text-[10px] text-slate-500 font-medium">
                     /mes
                   </span>
                 </p>
               </div>
-              <div className="py-3 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
-                <div className="flex justify-center items-center h-12 mb-3">
-                  <img src="/img/logo-tigo-sport.png" alt="Tigo Sports" className="h-11 w-auto object-contain" />
+              <div className="py-2 px-1 sm:py-2 sm:px-4 hover:scale-[1.05] transition-all duration-200 cursor-pointer group">
+                <div className="flex justify-center items-center h-8 sm:h-12 mb-2 sm:mb-3">
+                  <img src="/img/logo-tigo-sport.png" alt="Tigo Sports" className="h-8 sm:h-11 w-auto object-contain" />
                 </div>
-                <p className="text-sm font-black text-flow-green">
-                  Gs. 75.000{' '}
-                  <span className="text-[10px] text-slate-500 font-medium">
+                <p className="text-xs sm:text-sm font-black text-flow-green flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1">
+                  <span>Gs. 75.000</span>{' '}
+                  <span className="text-[9px] sm:text-[10px] text-slate-500 font-medium">
                     /mes
                   </span>
                 </p>
@@ -801,15 +758,15 @@ export default function LandingPageClient({
           </span>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mt-4">
-            {renderTextWithLogos(mobileBlock.title, 'text-white', 'h-[1.5em] sm:h-[1.7em]')}
+            {mobileBlock.title}
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-medium">
-            {renderTextWithLogos(mobileBlock.subtitle, 'text-white', 'h-[1.35em]')}
+            {mobileBlock.subtitle}
           </p>
 
           {/* Mobile Benefits Card */}
           <div className="mt-12 bg-white rounded-[2.5rem] p-8 md:p-10 shadow-2xl max-w-4xl mx-auto text-slate-800">
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-4">
               <div className="text-center flex flex-col items-center">
                 <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
                   <Phone className="h-6 w-6" />
@@ -836,6 +793,18 @@ export default function LandingPageClient({
 
               <div className="text-center flex flex-col items-center">
                 <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
+                  <Zap className="h-6 w-6" />
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
+                  Conexión LTE
+                </h4>
+                <p className="text-[11px] text-slate-500 mt-2 leading-relaxed max-w-[180px] mx-auto">
+                  Navegá a la máxima velocidad 4G/5G en la red más rápida del país.
+                </p>
+              </div>
+
+              <div className="text-center flex flex-col items-center">
+                <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
                   <Globe className="h-6 w-6" />
                 </div>
                 <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
@@ -847,8 +816,8 @@ export default function LandingPageClient({
               </div>
 
               <div className="text-center flex flex-col items-center">
-                <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="h-6 w-6" />
+                <div className="h-12 w-12 rounded-2xl bg-emerald-50 text-flow-green flex items-center justify-center flex-shrink-0">
+                  <FlowLogo className="h-6 w-6" />
                 </div>
                 <h4 className="font-extrabold text-sm text-slate-900 mt-4 leading-tight">
                   FlowPass Gratis
@@ -858,7 +827,7 @@ export default function LandingPageClient({
                 </p>
               </div>
 
-              <div className="text-center flex flex-col items-center col-span-2 lg:col-span-1 mx-auto lg:mx-0">
+              <div className="text-center flex flex-col items-center">
                 <div className="h-12 w-12 rounded-2xl bg-sky-50 text-personal-blue flex items-center justify-center flex-shrink-0">
                   <Smartphone className="h-6 w-6" />
                 </div>
@@ -873,7 +842,7 @@ export default function LandingPageClient({
           </div>
 
           {/* Grid of Mobile Plans */}
-          <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {mobileBlock.mobile_item.map((plan) => (
               <div
                 key={plan.id}
@@ -884,56 +853,44 @@ export default function LandingPageClient({
                     price: formatGs(plan.precio),
                   })
                 }
-                className="bg-white rounded-[2.5rem] p-6 sm:p-10 text-slate-800 shadow-2xl flex flex-col justify-between border border-slate-100 card-hover-effect relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-sky-500/10 transition-all duration-300"
+                className="bg-white rounded-3xl p-5 sm:p-7 text-slate-800 shadow-xl flex flex-col justify-between border border-slate-100 card-hover-effect relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-sky-500/10 transition-all duration-300"
               >
                 {/* Popular badge for the middle plan */}
                 {plan.cantidad_gigabytes === '16GB' && (
-                  <div className="absolute top-0 right-0 bg-personal-blue text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-5 rounded-bl-2xl">
+                  <div className="absolute top-0 right-0 bg-personal-blue text-white text-[9px] font-black uppercase tracking-wider py-1 px-4 rounded-bl-xl">
                     Más Vendido
                   </div>
                 )}
 
                 <div className="text-left flex flex-col h-full justify-between">
                   <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-0.5">
                       Internet Móvil
                     </span>
-                    <div className="flex items-baseline gap-1 mt-1">
-                      <span className="text-6xl font-black text-slate-900 tracking-tight leading-none">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-none">
                         {plan.cantidad_gigabytes.replace(/GB/i, '')}
                       </span>
-                      <span className="text-3xl font-black text-personal-blue">
+                      <span className="text-2xl font-black text-personal-blue">
                         GB
                       </span>
-                    </div>
-                    <p className="text-xs text-slate-500 font-bold tracking-wide mt-1 uppercase">
-                      Para navegar
-                    </p>
-                  </div>
-
-                  {/* Price Block inspired by the flyer */}
-                  <div className="my-6 bg-personal-blue rounded-2xl py-4 px-5 text-center text-white shadow-lg shadow-sky-400/15">
-                    <p className="text-[10px] font-bold uppercase tracking-wider opacity-90">Abono mensual</p>
-                    <div className="flex items-baseline justify-center gap-1 mt-1">
-                      <span className="text-sm font-light opacity-85">Gs.</span>
-                      <span className="text-3xl font-black tracking-tight leading-none">{formatGs(plan.precio)}</span>
+                      <span className="text-[11px] text-slate-500 font-bold tracking-wide ml-1.5 uppercase">
+                        para navegar
+                      </span>
                     </div>
                   </div>
 
-                  {/* Clean highlights list */}
-                  <div className="pb-6 border-b border-slate-100 flex flex-col gap-2.5">
-                    <div className="inline-flex items-center gap-2.5 text-xs text-slate-600 font-semibold">
-                      <div className="h-1.5 w-1.5 rounded-full bg-personal-blue flex-shrink-0" />
-                      <span>Conexión LTE de alta velocidad</span>
-                    </div>
-                    <div className="inline-flex items-center gap-2.5 text-xs text-slate-600 font-semibold">
-                      <div className="h-1.5 w-1.5 rounded-full bg-personal-blue flex-shrink-0" />
-                      <span>Roaming América automático</span>
+                  {/* Compact Price Block */}
+                  <div className="my-4 bg-sky-50/75 rounded-2xl py-2.5 px-4 flex items-center justify-between border border-sky-100/50">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Abono mensual</span>
+                    <div className="flex items-baseline gap-0.5">
+                      <span className="text-xs font-semibold text-slate-400">Gs.</span>
+                      <span className="text-xl sm:text-2xl font-black text-personal-blue tracking-tight leading-none">{formatGs(plan.precio)}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-4">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -943,7 +900,7 @@ export default function LandingPageClient({
                         price: formatGs(plan.precio),
                       });
                     }}
-                    className="w-full rounded-2xl bg-[#0A1C36] hover:bg-personal-blue text-white font-bold py-4 text-sm transition-all duration-300 shadow-md hover:shadow-sky-400/20 hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center"
+                    className="w-full rounded-xl bg-[#0A1C36] hover:bg-personal-blue text-white font-bold py-2.5 text-xs transition-all duration-300 shadow-md hover:shadow-sky-400/20 hover:scale-[1.01] active:scale-[0.98] cursor-pointer text-center"
                   >
                     Lo Quiero
                   </button>

@@ -22,7 +22,11 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName,
   const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('');
   const [depto, setDepto] = useState('');
+  const [servicioInteres, setServicioInteres] = useState('');
   const [error, setError] = useState('');
+
+  // A plan is selected if selectedPlan exists and price is not 'Sin costo' (which represents a generic inquiry)
+  const hasPlan = selectedPlan && selectedPlan.price !== 'Sin costo';
 
   // Handle escape key to close modal
   useEffect(() => {
@@ -43,7 +47,7 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!nombre.trim() || !telefono.trim() || !depto.trim()) {
+    if (!nombre.trim() || !telefono.trim() || !depto.trim() || (!hasPlan && !servicioInteres)) {
       setError('Por favor completá todos los campos.');
       return;
     }
@@ -51,9 +55,9 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName,
     setError('');
 
     // Format WhatsApp message
-    const planText = selectedPlan
+    const planText = hasPlan
       ? `el plan de *${selectedPlan.category}*: *${selectedPlan.name}* (${selectedPlan.price === 'Prioritario' ? 'Prioritario' : `por Gs. ${selectedPlan.price}`})`
-      : 'un plan de servicios de Personal';
+      : `servicios de *${servicioInteres}*`;
 
     const buildingText = buildingName ? `de *${buildingName}*` : 'del edificio';
     const message = `¡Hola ${agentData.nombre}! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, vivo en el departamento *${depto.trim()}* (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}. ¿Me podrías ayudar con la cobertura e instalación?`;
@@ -91,21 +95,24 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName,
         <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-personal-blue bg-sky-50 px-2.5 py-1 rounded-full">
-              Instalación en Edificio
+              {hasPlan ? 'Instalación en Edificio' : 'Consulta de Servicios'}
             </span>
           </div>
         </div>
 
         {/* Title */}
         <h3 className="text-xl font-bold text-slate-900 mb-1">
-          ¡Excelente elección! 🚀
+          {hasPlan ? '¡Excelente elección! 🚀' : 'Realizar Consulta 💬'}
         </h3>
-        <p className="text-sm text-slate-500 mb-6">
-          Completá tus datos para que {agentData.genero === 'masculino' ? 'el asesor' : 'la asesora'} **{agentData.nombre} {agentData.apellido}** gestione la instalación inmediata en tu departamento.
+        <p className="text-sm text-slate-500 mb-6 font-medium">
+          {hasPlan 
+            ? `Completá tus datos para que ${agentData.genero === 'masculino' ? 'el ejecutivo' : 'la ejecutiva'} **${agentData.nombre} ${agentData.apellido}** gestione la instalación inmediata en tu departamento.`
+            : `Completá tus datos para realizar tu consulta y que ${agentData.genero === 'masculino' ? 'el ejecutivo' : 'la ejecutiva'} **${agentData.nombre} ${agentData.apellido}** te brinde asesoramiento personalizado.`
+          }
         </p>
 
         {/* Selected Plan Summary Box */}
-        {selectedPlan && (
+        {hasPlan && selectedPlan && (
           <div className="mb-5 rounded-2xl bg-sky-50/70 p-4 border border-sky-100/50 flex flex-col gap-1.5">
             <span className="text-xs font-bold text-sky-800 uppercase tracking-wide">Plan Seleccionado:</span>
             <div className="flex items-baseline justify-between">
@@ -184,6 +191,29 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName,
             </div>
           </div>
 
+          {/* Conditional Dropdown when no specific plan is selected */}
+          {!hasPlan && (
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5" htmlFor="service">
+                ¿Qué servicio necesitas?
+              </label>
+              <select
+                id="service"
+                value={servicioInteres}
+                onChange={(e) => setServicioInteres(e.target.value)}
+                className="block w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3 px-4 text-sm text-slate-900 focus:border-personal-blue focus:bg-white focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+                required
+              >
+                <option value="" disabled hidden>Seleccioná una opción</option>
+                <option value="Internet Fibra Óptica">Internet Fibra Óptica</option>
+                <option value="Flow TV">Flow TV (Televisión)</option>
+                <option value="Telefonía Móvil">Telefonía Móvil (Celular)</option>
+                <option value="Combo de Servicios">Combo (Internet + TV + Móvil)</option>
+                <option value="Otro / Consulta General">Otro / Consulta General</option>
+              </select>
+            </div>
+          )}
+
           {error && (
             <p className="text-xs font-semibold text-rose-500 bg-rose-50 px-3 py-2 rounded-xl">
               {error}
@@ -196,7 +226,7 @@ export default function LeadModal({ isOpen, onClose, selectedPlan, buildingName,
             className="w-full mt-2 flex items-center justify-center gap-2 rounded-2xl bg-personal-blue py-3.5 px-4 text-sm font-bold text-white shadow-lg shadow-sky-400/20 hover:bg-sky-500 hover:shadow-sky-400/30 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
           >
             <WhatsappIcon className="h-5 w-5" />
-            Enviar Solicitud
+            {hasPlan ? 'Enviar Solicitud' : 'Enviar Consulta'}
           </button>
         </form>
       </div>
