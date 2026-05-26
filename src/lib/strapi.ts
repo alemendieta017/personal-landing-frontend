@@ -55,6 +55,7 @@ export interface ComboItem {
   isPopular: boolean;
   originalInternetSpeed?: string;
   originalMobileData?: string;
+  invoiceDiscount?: number;
 }
 
 export interface ComboBlockData {
@@ -246,6 +247,7 @@ export const FALLBACK_COMBO: ComboBlockData = {
       isPopular: true,
       originalInternetSpeed: "800 Mbps",
       originalMobileData: "32 GB",
+      invoiceDiscount: 20000,
     },
     {
       id: 8,

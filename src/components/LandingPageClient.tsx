@@ -294,7 +294,9 @@ export default function LandingPageClient({
                       handleOpenModal({
                         name: combo.name,
                         category: "Combo",
-                        price: formatGs(combo.price),
+                        price: combo.invoiceDiscount && combo.invoiceDiscount > 0
+                          ? `${formatGs(combo.price - combo.invoiceDiscount)} (con desc. en factura)`
+                          : formatGs(combo.price),
                       })
                     }
                     className={`rounded-[2.5rem] p-8 shadow-xl border flex flex-col justify-between relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-2xl transition-all duration-300 ${
@@ -455,30 +457,47 @@ export default function LandingPageClient({
 
                     <div className="mt-4 flex items-end justify-between">
                       <div>
-                        <p
-                          className={`text-[9px] uppercase font-bold tracking-wider ${
-                            combo.isPopular
-                              ? "text-slate-400"
-                              : "text-slate-500"
-                          }`}
-                        >
-                          Precio Final Combo
-                        </p>
-                        <p className="text-3xl font-black mt-1 leading-none">
-                          <span
-                            className={`font-light mr-1 text-lg ${
-                              combo.isPopular
-                                ? "text-slate-300"
-                                : "text-slate-500"
-                            }`}
-                          >
-                            Gs.
-                          </span>
-                          {formatGs(combo.price)}
-                          <span className="text-[10px] font-light opacity-75 block mt-1.5">
-                            por mes
-                          </span>
-                        </p>
+                        {combo.invoiceDiscount && combo.invoiceDiscount > 0 ? (
+                          <div className="flex flex-col mt-1">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <span className={`text-sm line-through ${
+                                combo.isPopular ? "text-slate-400" : "text-slate-500"
+                              }`}>
+                                Gs. {formatGs(combo.price)}
+                              </span>
+                              <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                                combo.isPopular
+                                  ? "bg-emerald-500/15 text-[#10b981] border border-emerald-500/25"
+                                  : "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                              }`}>
+                                -GS. {formatGs(combo.invoiceDiscount)} EN FACTURA
+                              </span>
+                            </div>
+                            <p className={`text-3xl font-black leading-none ${combo.isPopular ? "text-white" : "text-slate-900"}`}>
+                              <span className={`font-light mr-1 text-lg ${combo.isPopular ? "text-slate-300" : "text-slate-500"}`}>Gs.</span>
+                              {formatGs(combo.price - combo.invoiceDiscount)}
+                              <span className="text-[10px] font-light opacity-75 block mt-1.5">
+                                por mes
+                              </span>
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-3xl font-black leading-none">
+                            <span
+                              className={`font-light mr-1 text-lg ${
+                                combo.isPopular
+                                  ? "text-slate-300"
+                                  : "text-slate-500"
+                              }`}
+                            >
+                              Gs.
+                            </span>
+                            {formatGs(combo.price)}
+                            <span className="text-[10px] font-light opacity-75 block mt-1.5">
+                              por mes
+                            </span>
+                          </p>
+                        )}
                       </div>
 
                       <button
@@ -487,7 +506,9 @@ export default function LandingPageClient({
                           handleOpenModal({
                             name: combo.name,
                             category: "Combo",
-                            price: formatGs(combo.price),
+                            price: combo.invoiceDiscount && combo.invoiceDiscount > 0
+                              ? `${formatGs(combo.price - combo.invoiceDiscount)} (con desc. en factura)`
+                              : formatGs(combo.price),
                           });
                         }}
                         className={`rounded-2xl font-extrabold py-3 px-6 text-xs transition-all cursor-pointer hover:scale-[1.03] active:scale-[0.97] ${
