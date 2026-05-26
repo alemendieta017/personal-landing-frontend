@@ -459,13 +459,13 @@ export default function LandingPageClient({
                       <div>
                         {combo.invoiceDiscount && combo.invoiceDiscount > 0 ? (
                           <div className="flex flex-col mt-1">
-                            <div className="flex items-center gap-2 mb-1.5">
-                              <span className={`text-sm line-through ${
+                            <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5">
+                              <span className={`text-xs sm:text-sm line-through whitespace-nowrap ${
                                 combo.isPopular ? "text-slate-400" : "text-slate-500"
                               }`}>
                                 Gs. {formatGs(combo.price)}
                               </span>
-                              <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                              <span className={`px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-wider whitespace-nowrap ${
                                 combo.isPopular
                                   ? "bg-emerald-500/15 text-[#10b981] border border-emerald-500/25"
                                   : "bg-emerald-50 text-emerald-700 border border-emerald-100"
