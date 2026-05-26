@@ -142,7 +142,7 @@ export default function LandingPageClient({
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] max-w-4xl">
-            Aprovecha las promociones de{" "}
+            ¡Aprovecha las promociones de{" "}
             <span className="text-personal-blue">Personal</span> para{" "}
             {buildingData ? buildingData.name : "tu Departamento"}!
           </h1>
