@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import React from 'react'
-import WhatsappIcon from './WhatsappIcon'
-import { AgentData } from '../lib/strapi'
+import React from "react";
+import WhatsappIcon from "./WhatsappIcon";
+import { AgentData } from "../lib/strapi";
 
 interface HeaderProps {
   onOpenLeadModal: (
     plan: { name: string; category: string; price: string } | null,
-  ) => void
-  agentData: AgentData
+  ) => void;
+  agentData: AgentData;
 }
 
 export function PersonalLogo({
-  className = 'h-6 text-personal-blue',
+  className = "h-6 text-personal-blue",
 }: {
-  className?: string
+  className?: string;
 }) {
   return (
     <svg
@@ -42,13 +42,13 @@ export function PersonalLogo({
         <path d="M1329.4,125.3v203.6c0,3.4,0.4,5.4,1.2,6.5c0.8,1.1,2.3,1.6,4.9,1.6h24.5v33.3h-36.8c-10.2,0-18-3.3-23.2-9.8c-5.3-6.6-7.9-16.5-7.9-29.6V125.3H1329.4" />
       </g>
     </svg>
-  )
+  );
 }
 
 export function FlowLogo({
-  className = 'h-6 text-flow-green',
+  className = "h-6 text-flow-green",
 }: {
-  className?: string
+  className?: string;
 }) {
   return (
     <svg
@@ -60,17 +60,17 @@ export function FlowLogo({
       <path d="M412.22,83.35c112.59,102.87,89.49,289.81-39.33,368.01C182,567.23-44.01,363.57,46.78,160.1,109.44,19.67,297.79-21.21,412.22,83.35ZM348.09,143.86c-111.19-92.87-262.66,10.7-228.47,148.8,27.93,112.8,174.46,145.66,245.58,53.69,45.31-58.59,40.68-154.22-17.12-202.49Z" />
       <polygon points="208.16 189.37 330.51 252.81 208.16 320.37 208.16 189.37" />
     </svg>
-  )
+  );
 }
 
 export default function Header({ onOpenLeadModal, agentData }: HeaderProps) {
   const handleContactClick = () => {
     onOpenLeadModal({
-      name: 'Consulta General',
-      category: 'Asesoramiento',
-      price: 'Sin costo',
-    })
-  }
+      name: "Consulta General",
+      category: "Asesoramiento",
+      price: "Sin costo",
+    });
+  };
 
   return (
     <header className="absolute top-0 left-0 right-0 z-30 w-full bg-transparent">
@@ -90,11 +90,14 @@ export default function Header({ onOpenLeadModal, agentData }: HeaderProps) {
               className="flex items-center gap-2 rounded-2xl py-2.5 px-5 text-sm font-bold transition-all duration-300 cursor-pointer bg-white/10 text-white hover:bg-white/20 border border-white/20 active:scale-[0.98]"
             >
               <WhatsappIcon className="h-4.5 w-4.5 text-emerald-400" />
-              {agentData.nombre} {agentData.apellido} - {agentData.genero === 'masculino' ? 'Ejecutivo de Ventas Edificios' : 'Ejecutiva de Ventas Edificios'}
+              {agentData.nombre} {agentData.apellido} -{" "}
+              {agentData.genero === "masculino"
+                ? "Ejecutivo de Ventas Edificios"
+                : "Ejecutiva de Ventas Edificios"}
             </button>
           </div>
         </div>
       </nav>
     </header>
-  )
+  );
 }

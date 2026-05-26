@@ -1,10 +1,13 @@
-import React from 'react';
+import React from "react";
 
 interface WhatsappIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-export default function WhatsappIcon({ className, ...props }: WhatsappIconProps) {
+export default function WhatsappIcon({
+  className,
+  ...props
+}: WhatsappIconProps) {
   return (
     <svg
       viewBox="0 0 24 24"
