@@ -71,6 +71,9 @@ export default function LandingPageClient({
       const alreadyVisited = sessionStorage.getItem(storageKey);
 
       if (!alreadyVisited) {
+        // Set item immediately to prevent concurrent duplicate calls (e.g. from React StrictMode or hydration)
+        sessionStorage.setItem(storageKey, "true");
+
         fetch("/api/visit", {
           method: "POST",
           headers: {
@@ -79,11 +82,12 @@ export default function LandingPageClient({
           body: JSON.stringify({ buildingId: buildingData.documentId }),
         })
           .then((res) => {
-            if (res.ok) {
-              sessionStorage.setItem(storageKey, "true");
+            if (!res.ok) {
+              sessionStorage.removeItem(storageKey);
             }
           })
           .catch((err) => {
+            sessionStorage.removeItem(storageKey);
             console.error("Error logging visit from landing page:", err);
           });
       }
