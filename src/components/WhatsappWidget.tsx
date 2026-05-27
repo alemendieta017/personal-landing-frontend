@@ -55,7 +55,7 @@ export default function WhatsappWidget({
       ? `¡Hola ${agentData.nombre}! 👋 Acabo de ver el QR ubicado en *${buildingName}*. Tengo la siguiente consulta: "${inputMessage.trim()}"`
       : `¡Hola ${agentData.nombre}! 👋 Soy ${buildingText}. Tengo la siguiente consulta: "${inputMessage.trim()}"`;
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${agentData.telefono.replace(/\D/g, "")}?text=${encodedMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send/?phone=${agentData.telefono.replace(/\D/g, "")}&text=${encodedMessage}`;
 
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setInputMessage("");

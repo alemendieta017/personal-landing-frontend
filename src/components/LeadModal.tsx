@@ -97,7 +97,7 @@ export default function LeadModal({
     const message = `¡Hola ${agentData.nombre}! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, ${locationText} (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}.`;
 
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${agentData.telefono.replace(/\D/g, "")}?text=${encodedMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send/?phone=${agentData.telefono.replace(/\D/g, "")}&text=${encodedMessage}`;
 
     // Redirect to WhatsApp
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
