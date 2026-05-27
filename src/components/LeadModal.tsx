@@ -15,6 +15,7 @@ interface LeadModalProps {
     price: string;
   } | null;
   buildingName?: string;
+  buildingType?: "building" | "commercial";
   agentData: AgentData;
 }
 
@@ -23,6 +24,7 @@ export default function LeadModal({
   onClose,
   selectedPlan,
   buildingName,
+  buildingType,
   agentData,
 }: LeadModalProps) {
   const [nombre, setNombre] = useState("");
@@ -33,6 +35,18 @@ export default function LeadModal({
 
   // A plan is selected if selectedPlan exists and price is not 'Sin costo' (which represents a generic inquiry)
   const hasPlan = selectedPlan && selectedPlan.price !== "Sin costo";
+
+  const isCommercial = buildingType === "commercial";
+  const deptoLabel = isCommercial ? "Dirección" : "Departamento / Nivel";
+  const deptoPlaceholder = isCommercial
+    ? "Ej. Avda. España 123 c/ Curupayty o Local 15"
+    : "Ej. Torre B - Piso 4 (Depto 402)";
+  const headerBannerText = hasPlan
+    ? isCommercial
+      ? "Instalación en tu Hogar"
+      : "Instalación en Edificio"
+    : "Consulta de Servicios";
+  const installTargetText = isCommercial ? "tu hogar" : "tu departamento";
 
   // Handle escape key to close modal
   useEffect(() => {
@@ -70,8 +84,17 @@ export default function LeadModal({
       ? `el plan de *${selectedPlan.category}*: *${selectedPlan.name}* (${selectedPlan.price === "Prioritario" ? "Prioritario" : `por Gs. ${selectedPlan.price}`})`
       : `servicios de *${servicioInteres}*`;
 
-    const buildingText = buildingName ? `de *${buildingName}*` : "del edificio";
-    const message = `¡Hola ${agentData.nombre}! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, vivo en el departamento *${depto.trim()}* (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}. ¿Me podrías ayudar con la cobertura e instalación?`;
+    const buildingText = buildingName
+      ? isCommercial
+        ? `ubicado en *${buildingName}*`
+        : `de *${buildingName}*`
+      : "del edificio";
+    
+    const locationText = isCommercial
+      ? `mi dirección de instalación es *${depto.trim()}*`
+      : `vivo en el departamento *${depto.trim()}*`;
+
+    const message = `¡Hola ${agentData.nombre}! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, ${locationText} (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}. ¿Me podrías ayudar con la cobertura e instalación?`;
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${agentData.telefono.replace(/\D/g, "")}?text=${encodedMessage}`;
@@ -105,19 +128,27 @@ export default function LeadModal({
         <div className="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-personal-blue bg-sky-50 px-2.5 py-1 rounded-full">
-              {hasPlan ? "Instalación en Edificio" : "Consulta de Servicios"}
+              {headerBannerText}
             </span>
           </div>
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-slate-900 mb-1">
+        <h3 className="text-xl font-bold text-slate-950 mb-1">
           {hasPlan ? "¡Excelente elección! 🚀" : "Realizar Consulta 💬"}
         </h3>
         <p className="text-sm text-slate-500 mb-6 font-medium">
-          {hasPlan
-            ? `Completá tus datos para que ${agentData.genero === "masculino" ? "el ejecutivo" : "la ejecutiva"} **${agentData.nombre} ${agentData.apellido}** gestione la instalación inmediata en tu departamento.`
-            : `Completá tus datos para realizar tu consulta y que ${agentData.genero === "masculino" ? "el ejecutivo" : "la ejecutiva"} **${agentData.nombre} ${agentData.apellido}** te brinde asesoramiento personalizado.`}
+          {hasPlan ? (
+            <>
+              Completá tus datos para que {agentData.genero === "masculino" ? "el ejecutivo" : "la ejecutiva"}{" "}
+              <strong>{agentData.nombre} {agentData.apellido}</strong> gestione la instalación inmediata en {installTargetText}.
+            </>
+          ) : (
+            <>
+              Completá tus datos para realizar tu consulta y que {agentData.genero === "masculino" ? "el ejecutivo" : "la ejecutiva"}{" "}
+              <strong>{agentData.nombre} {agentData.apellido}</strong> te brinde asesoramiento personalizado.
+            </>
+          )}
         </p>
 
         {/* Selected Plan Summary Box */}
@@ -195,7 +226,7 @@ export default function LeadModal({
               className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5"
               htmlFor="depto"
             >
-              Departamento / Nivel
+              {deptoLabel}
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
@@ -206,7 +237,7 @@ export default function LeadModal({
                 id="depto"
                 value={depto}
                 onChange={(e) => setDepto(e.target.value)}
-                placeholder="Ej. Torre B - Piso 4 (Depto 402)"
+                placeholder={deptoPlaceholder}
                 className="block w-full rounded-2xl border border-slate-200 bg-slate-50/50 py-3 pl-10 pr-4 text-sm text-slate-900 placeholder-slate-400 focus:border-personal-blue focus:bg-white focus:ring-2 focus:ring-sky-100 outline-none transition-all"
                 required
               />

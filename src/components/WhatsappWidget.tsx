@@ -10,14 +10,17 @@ interface WhatsappWidgetProps {
     plan: { name: string; category: string; price: string } | null,
   ) => void;
   buildingName?: string;
+  buildingType?: "building" | "commercial";
   agentData: AgentData;
 }
 
 export default function WhatsappWidget({
   onOpenLeadModal,
   buildingName,
+  buildingType,
   agentData,
 }: WhatsappWidgetProps) {
+  const isCommercial = buildingType === "commercial";
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
@@ -44,9 +47,13 @@ export default function WhatsappWidget({
 
     // Direct redirection to agent's WhatsApp with user message
     const buildingText = buildingName
-      ? `del Edificio *${buildingName}*`
+      ? isCommercial
+        ? `ubicado en *${buildingName}*`
+        : `del Edificio *${buildingName}*`
       : "del edificio";
-    const message = `¡Hola ${agentData.nombre}! 👋 Soy ${buildingText}. Tengo la siguiente consulta: "${inputMessage.trim()}"`;
+    const message = isCommercial
+      ? `¡Hola ${agentData.nombre}! 👋 Acabo de ver el QR ubicado en *${buildingName}*. Tengo la siguiente consulta: "${inputMessage.trim()}"`
+      : `¡Hola ${agentData.nombre}! 👋 Soy ${buildingText}. Tengo la siguiente consulta: "${inputMessage.trim()}"`;
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${agentData.telefono.replace(/\D/g, "")}?text=${encodedMessage}`;
 
@@ -102,7 +109,9 @@ export default function WhatsappWidget({
               </p>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
                 {buildingName
-                  ? `¡Hola! 👋 ¿Querés habilitar Internet Fibra o Flow TV en ${buildingName}? Escribime.`
+                  ? isCommercial
+                    ? `¡Hola! 👋 ¿Querés habilitar Internet Fibra, Flow o Telefonía Móvil en tu hogar? Escribime.`
+                    : `¡Hola! 👋 ¿Querés habilitar Internet Fibra o Flow TV en ${buildingName}? Escribime.`
                   : "¡Hola! 👋 ¿Querés habilitar Internet Fibra o Flow TV en tu depto? Escribime."}
               </p>
             </div>
@@ -164,8 +173,11 @@ export default function WhatsappWidget({
               {agentData.genero === "masculino"
                 ? "el ejecutivo designado"
                 : "la ejecutiva designada"}{" "}
-              para {buildingName ? buildingName : "tu edificio"}. ¿En qué puedo
-              ayudarte?
+              {buildingName
+                ? isCommercial
+                  ? `para la zona de ${buildingName}`
+                  : `para ${buildingName}`
+                : "para tu edificio"}. ¿En qué puedo ayudarte?
             </div>
 
             {/* Quick Actions */}
@@ -174,7 +186,11 @@ export default function WhatsappWidget({
                 onClick={handleStartLead}
                 className="w-full flex items-center justify-between bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-100 py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-left"
               >
-                <span>Solicitar instalación en mi depto</span>
+                <span>
+                  {isCommercial
+                    ? "Solicitar instalación en mi hogar"
+                    : "Solicitar instalación en mi depto"}
+                </span>
                 <ArrowRight className="h-4 w-4 text-sky-700" />
               </button>
             </div>

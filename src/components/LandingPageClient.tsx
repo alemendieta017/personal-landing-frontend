@@ -56,6 +56,7 @@ export default function LandingPageClient({
   agentData,
   buildingData,
 }: LandingPageClientProps) {
+  const isCommercial = buildingData?.type === "commercial";
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<{
     name: string;
@@ -143,8 +144,12 @@ export default function LandingPageClient({
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] max-w-4xl">
             ¡Aprovecha las promociones de{" "}
-            <span className="text-personal-blue">Personal</span> para{" "}
-            {buildingData ? buildingData.name : "tu Departamento"}!
+            <span className="text-personal-blue">Personal</span>{" "}
+            {buildingData
+              ? isCommercial
+                ? `en ${buildingData.name}`
+                : `para ${buildingData.name}`
+              : "para tu Departamento"}!
           </h1>
         </div>
 
@@ -1157,6 +1162,7 @@ export default function LandingPageClient({
         onClose={() => setModalOpen(false)}
         selectedPlan={selectedPlan}
         buildingName={buildingData?.name}
+        buildingType={buildingData?.type}
         agentData={agentData}
       />
 
@@ -1164,6 +1170,7 @@ export default function LandingPageClient({
       <WhatsappWidget
         onOpenLeadModal={handleOpenModal}
         buildingName={buildingData?.name}
+        buildingType={buildingData?.type}
         agentData={agentData}
       />
     </div>

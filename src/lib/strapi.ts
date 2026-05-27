@@ -294,6 +294,7 @@ export interface BuildingData {
   name: string;
   code: string;
   address?: string;
+  type?: "building" | "commercial";
 }
 
 export async function getBuildingByCode(
