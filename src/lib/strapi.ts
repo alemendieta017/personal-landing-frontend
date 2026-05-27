@@ -10,6 +10,7 @@ export interface InternetBlockData {
   id: number;
   documentId: string;
   title: string;
+  commercialBuildingTitle?: string;
   subtitle: string;
   internetPlans: InternetPlan[];
 }
@@ -109,6 +110,7 @@ export const FALLBACK_INTERNET: InternetBlockData = {
   id: 0,
   documentId: "fallback-internet",
   title: "El Wifi en mi Depto. es de Personal",
+  commercialBuildingTitle: "El mejor Wifi de Personal para tu Hogar",
   subtitle:
     "Disfrutá fibra óptica más rápida del país\nComprobado por vos, certificado por Ookla.",
   internetPlans: [

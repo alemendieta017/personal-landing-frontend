@@ -174,9 +174,7 @@ export default function WhatsappWidget({
                 ? "el ejecutivo designado"
                 : "la ejecutiva designada"}{" "}
               {buildingName
-                ? isCommercial
-                  ? `para la zona de ${buildingName}`
-                  : `para ${buildingName}`
+                ? `para ${buildingName}`
                 : "para tu edificio"}. ¿En qué puedo ayudarte?
             </div>
 

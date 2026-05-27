@@ -598,8 +598,12 @@ export default function LandingPageClient({
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
             {(() => {
-              if (!internetBlock.title) return null;
-              const parts = internetBlock.title.split(/(personal)/i);
+              const titleText = isCommercial && internetBlock.commercialBuildingTitle
+                ? internetBlock.commercialBuildingTitle
+                : internetBlock.title;
+
+              if (!titleText) return null;
+              const parts = titleText.split(/(personal)/i);
               return parts.map((part, index) => {
                 if (part.toLowerCase() === "personal") {
                   return (

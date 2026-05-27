@@ -94,7 +94,7 @@ export default function LeadModal({
       ? `mi dirección de instalación es *${depto.trim()}*`
       : `vivo en el departamento *${depto.trim()}*`;
 
-    const message = `¡Hola ${agentData.nombre}! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, ${locationText} (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}. ¿Me podrías ayudar con la cobertura e instalación?`;
+    const message = `¡Hola ${agentData.nombre}! 👋 Acabo de escanear el QR ${buildingText}. Mi nombre es *${nombre.trim()}*, ${locationText} (Tel: ${telefono.trim()}) y estoy interesado en contratar ${planText}.`;
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${agentData.telefono.replace(/\D/g, "")}?text=${encodedMessage}`;
