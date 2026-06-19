@@ -106,6 +106,14 @@ export default function LandingPageClient({
   >("tres_productos");
   const combosData = comboBlock?.ComboItem || [];
 
+  const [selectedPortabilidad, setSelectedPortabilidad] = useState<boolean>(false);
+  const mobilePlans = mobileBlock?.mobile_item || [];
+  const hasPortabilidadPlans = mobilePlans.some((plan) => plan.portabilidad === true);
+  const filteredMobileItems = mobilePlans.filter((plan) => {
+    const planPortabilidad = plan.portabilidad ?? false;
+    return planPortabilidad === selectedPortabilidad;
+  });
+
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [shortcutsSticky, setShortcutsSticky] = useState(false);
 
@@ -166,18 +174,16 @@ export default function LandingPageClient({
 
       {/* Sticky Quick Menu Tabs Wrapper */}
       <div
-        className={`sticky top-0 z-20 w-full flex justify-center px-4 transition-all duration-300 ${
-          shortcutsSticky
-            ? "py-3 bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-md"
-            : "-mt-10 mb-6 bg-transparent"
-        }`}
+        className={`sticky top-0 z-20 w-full flex justify-center px-4 transition-all duration-300 ${shortcutsSticky
+          ? "py-3 bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-md"
+          : "-mt-10 mb-6 bg-transparent"
+          }`}
       >
         <div
-          className={`w-full max-w-lg grid grid-cols-4 p-2 gap-2 transition-all duration-300 ${
-            shortcutsSticky
-              ? "bg-transparent border-transparent"
-              : "bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-950/20"
-          }`}
+          className={`w-full max-w-lg grid grid-cols-4 p-2 gap-2 transition-all duration-300 ${shortcutsSticky
+            ? "bg-transparent border-transparent"
+            : "bg-white rounded-3xl border border-slate-200/80 shadow-xl shadow-slate-950/20"
+            }`}
         >
           <a
             href="#combos"
@@ -267,21 +273,19 @@ export default function LandingPageClient({
             <div className="inline-flex p-1 bg-slate-200 rounded-2xl border border-slate-300/40 shadow-inner">
               <button
                 onClick={() => setSelectedComboType("tres_productos")}
-                className={`px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer ${
-                  selectedComboType === "tres_productos"
-                    ? "bg-[#0A1C36] text-white shadow-md"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer ${selectedComboType === "tres_productos"
+                  ? "bg-[#0A1C36] text-white shadow-md"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 🔥 Combos Triple
               </button>
               <button
                 onClick={() => setSelectedComboType("dos_productos")}
-                className={`px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer ${
-                  selectedComboType === "dos_productos"
-                    ? "bg-[#0A1C36] text-white shadow-md"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer ${selectedComboType === "dos_productos"
+                  ? "bg-[#0A1C36] text-white shadow-md"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
                 Combos Doble
               </button>
@@ -308,11 +312,10 @@ export default function LandingPageClient({
                           : formatGs(combo.price),
                       })
                     }
-                    className={`rounded-[2.5rem] p-8 shadow-xl border flex flex-col justify-between relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-2xl transition-all duration-300 ${
-                      combo.isPopular
-                        ? "bg-gradient-to-br from-[#0c2346] to-[#122e5c] text-white border-sky-900 shadow-sky-500/10 ring-2 ring-personal-blue/30"
-                        : "bg-white text-slate-800 border-slate-200 hover:shadow-slate-300/40"
-                    }`}
+                    className={`rounded-[2.5rem] p-8 shadow-xl border flex flex-col justify-between relative overflow-hidden cursor-pointer hover:scale-[1.02] hover:shadow-2xl transition-all duration-300 ${combo.isPopular
+                      ? "bg-gradient-to-br from-[#0c2346] to-[#122e5c] text-white border-sky-900 shadow-sky-500/10 ring-2 ring-personal-blue/30"
+                      : "bg-white text-slate-800 border-slate-200 hover:shadow-slate-300/40"
+                      }`}
                   >
                     {combo.isPopular && (
                       <div className="absolute top-4 right-6 bg-personal-blue text-white text-[10px] font-black uppercase tracking-wider py-1 px-4 rounded-full flex items-center gap-1.5 shadow-md">
@@ -323,9 +326,8 @@ export default function LandingPageClient({
 
                     <div className="text-left">
                       <span
-                        className={`text-[10px] font-extrabold uppercase tracking-widest block mb-2 ${
-                          combo.isPopular ? "text-slate-400" : "text-slate-500"
-                        }`}
+                        className={`text-[10px] font-extrabold uppercase tracking-widest block mb-2 ${combo.isPopular ? "text-slate-400" : "text-slate-500"
+                          }`}
                       >
                         {combo.type === "tres_productos"
                           ? "Combo Triple"
@@ -340,11 +342,10 @@ export default function LandingPageClient({
                         {/* Internet Row */}
                         <div className="flex items-center gap-3">
                           <div
-                            className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${
-                              combo.isPopular
-                                ? "bg-sky-500/15 text-sky-300 border border-sky-500/25"
-                                : "bg-sky-50 text-personal-blue border border-sky-100"
-                            }`}
+                            className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${combo.isPopular
+                              ? "bg-sky-500/15 text-sky-300 border border-sky-500/25"
+                              : "bg-sky-50 text-personal-blue border border-sky-100"
+                              }`}
                           >
                             <Globe className="h-5 w-5" />
                           </div>
@@ -357,7 +358,7 @@ export default function LandingPageClient({
                             <span className="text-sm font-extrabold flex items-center gap-1.5">
                               {combo.originalInternetSpeed &&
                                 combo.originalInternetSpeed !==
-                                  combo.internetSpeed && (
+                                combo.internetSpeed && (
                                   <span
                                     className={`line-through font-normal text-xs ${combo.isPopular ? "text-slate-500" : "text-slate-400"}`}
                                   >
@@ -381,11 +382,10 @@ export default function LandingPageClient({
                         {hasTv && (
                           <div className="flex items-center gap-3">
                             <div
-                              className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${
-                                combo.isPopular
-                                  ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/25"
-                                  : "bg-emerald-50 text-flow-green border border-emerald-100"
-                              }`}
+                              className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${combo.isPopular
+                                ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/25"
+                                : "bg-emerald-50 text-flow-green border border-emerald-100"
+                                }`}
                             >
                               <Tv className="h-5 w-5" />
                             </div>
@@ -408,11 +408,10 @@ export default function LandingPageClient({
                         {hasMobile && (
                           <div className="flex items-center gap-3">
                             <div
-                              className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${
-                                combo.isPopular
-                                  ? "bg-indigo-500/15 text-indigo-300 border border-indigo-500/25"
-                                  : "bg-indigo-50 text-indigo-600 border border-indigo-100"
-                              }`}
+                              className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 ${combo.isPopular
+                                ? "bg-indigo-500/15 text-indigo-300 border border-indigo-500/25"
+                                : "bg-indigo-50 text-indigo-600 border border-indigo-100"
+                                }`}
                             >
                               <Smartphone className="h-5 w-5" />
                             </div>
@@ -425,7 +424,7 @@ export default function LandingPageClient({
                               <span className="text-sm font-extrabold flex items-center gap-1.5">
                                 {combo.originalMobileData &&
                                   combo.originalMobileData !==
-                                    combo.mobileData && (
+                                  combo.mobileData && (
                                     <span
                                       className={`line-through font-normal text-xs ${combo.isPopular ? "text-slate-500" : "text-slate-400"}`}
                                     >
@@ -450,11 +449,10 @@ export default function LandingPageClient({
                       {/* Marketing Hook / Duplication Badge */}
                       {combo.badge && (
                         <div
-                          className={`mt-4 p-3 rounded-2xl border flex items-center gap-2.5 ${
-                            combo.isPopular
-                              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-300"
-                              : "bg-emerald-50 border-emerald-100 text-emerald-800"
-                          }`}
+                          className={`mt-4 p-3 rounded-2xl border flex items-center gap-2.5 ${combo.isPopular
+                            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-300"
+                            : "bg-emerald-50 border-emerald-100 text-emerald-800"
+                            }`}
                         >
                           <Sparkles className="h-4.5 w-4.5 text-emerald-400 flex-shrink-0 animate-pulse" />
                           <span className="text-xs font-extrabold leading-tight">
@@ -469,16 +467,14 @@ export default function LandingPageClient({
                         {combo.invoiceDiscount && combo.invoiceDiscount > 0 ? (
                           <div className="flex flex-col mt-1">
                             <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5">
-                              <span className={`text-xs sm:text-sm line-through whitespace-nowrap ${
-                                combo.isPopular ? "text-slate-400" : "text-slate-500"
-                              }`}>
+                              <span className={`text-xs sm:text-sm line-through whitespace-nowrap ${combo.isPopular ? "text-slate-400" : "text-slate-500"
+                                }`}>
                                 Gs. {formatGs(combo.price)}
                               </span>
-                              <span className={`px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-wider whitespace-nowrap ${
-                                combo.isPopular
-                                  ? "bg-emerald-500/15 text-[#10b981] border border-emerald-500/25"
-                                  : "bg-emerald-50 text-emerald-700 border border-emerald-100"
-                              }`}>
+                              <span className={`px-1.5 sm:px-2.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-wider whitespace-nowrap ${combo.isPopular
+                                ? "bg-emerald-500/15 text-[#10b981] border border-emerald-500/25"
+                                : "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                                }`}>
                                 -GS. {formatGs(combo.invoiceDiscount)} EN FACTURA
                               </span>
                             </div>
@@ -493,11 +489,10 @@ export default function LandingPageClient({
                         ) : (
                           <p className="text-3xl font-black leading-none">
                             <span
-                              className={`font-light mr-1 text-lg ${
-                                combo.isPopular
-                                  ? "text-slate-300"
-                                  : "text-slate-500"
-                              }`}
+                              className={`font-light mr-1 text-lg ${combo.isPopular
+                                ? "text-slate-300"
+                                : "text-slate-500"
+                                }`}
                             >
                               Gs.
                             </span>
@@ -520,11 +515,10 @@ export default function LandingPageClient({
                               : formatGs(combo.price),
                           });
                         }}
-                        className={`rounded-2xl font-extrabold py-3 px-6 text-xs transition-all cursor-pointer hover:scale-[1.03] active:scale-[0.97] ${
-                          combo.isPopular
-                            ? "bg-personal-blue hover:bg-sky-400 text-white shadow-lg shadow-sky-400/25"
-                            : "bg-[#0c2346] hover:bg-slate-800 text-white shadow-md shadow-[#0c2346]/10"
-                        }`}
+                        className={`rounded-2xl font-extrabold py-3 px-6 text-xs transition-all cursor-pointer hover:scale-[1.03] active:scale-[0.97] ${combo.isPopular
+                          ? "bg-personal-blue hover:bg-sky-400 text-white shadow-lg shadow-sky-400/25"
+                          : "bg-[#0c2346] hover:bg-slate-800 text-white shadow-md shadow-[#0c2346]/10"
+                          }`}
                       >
                         Lo Quiero
                       </button>
@@ -647,11 +641,10 @@ export default function LandingPageClient({
                         price: formatGs(plan.precio),
                       })
                     }
-                    className={`flex flex-row items-center justify-between gap-3 p-3 sm:p-5 rounded-2xl hover:bg-white/10 hover:shadow-xl hover:shadow-sky-500/5 hover:scale-[1.01] transition-all duration-200 cursor-pointer group ${
-                      index !== internetBlock.internetPlans.length - 1
-                        ? "border-b border-sky-900/50 pb-5 sm:pb-6"
-                        : ""
-                    }`}
+                    className={`flex flex-row items-center justify-between gap-3 p-3 sm:p-5 rounded-2xl hover:bg-white/10 hover:shadow-xl hover:shadow-sky-500/5 hover:scale-[1.01] transition-all duration-200 cursor-pointer group ${index !== internetBlock.internetPlans.length - 1
+                      ? "border-b border-sky-900/50 pb-5 sm:pb-6"
+                      : ""
+                      }`}
                   >
                     {/* Left Side: Icon & Speed */}
                     <div className="flex items-center gap-2.5 sm:gap-4">
@@ -1085,9 +1078,35 @@ export default function LandingPageClient({
             </div>
           </div>
 
+          {/* Interactive Tab Switcher for Mobile Plans */}
+          {hasPortabilidadPlans && (
+            <div className="flex justify-center mt-10 mb-2">
+              <div className="inline-flex p-1 bg-slate-200 rounded-2xl border border-slate-300/40 shadow-inner">
+                <button
+                  onClick={() => setSelectedPortabilidad(false)}
+                  className={`px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer ${selectedPortabilidad === false
+                    ? "bg-[#0A1C36] text-white shadow-md"
+                    : "text-slate-600 hover:text-slate-900"
+                    }`}
+                >
+                  Migra
+                </button>
+                <button
+                  onClick={() => setSelectedPortabilidad(true)}
+                  className={`px-6 py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all duration-300 cursor-pointer ${selectedPortabilidad === true
+                    ? "bg-[#0A1C36] text-white shadow-md"
+                    : "text-slate-600 hover:text-slate-900"
+                    }`}
+                >
+                  📲 Porta
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Grid of Mobile Plans */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {mobileBlock.mobile_item.map((plan) => (
+            {filteredMobileItems.map((plan) => (
               <div
                 key={plan.id}
                 onClick={() =>

@@ -34,6 +34,7 @@ export interface MobileItem {
   id: number;
   cantidad_gigabytes: string;
   precio: number;
+  portabilidad?: boolean;
 }
 
 export interface MobileBlockData {
@@ -146,9 +147,14 @@ export const FALLBACK_MOBILE: MobileBlockData = {
   subtitle:
     "Los planes traen gigas para navegar, llamadas ilimitadas, WhatsApp gratis, *Roaming incluido y además acumulás tus gigas que no usás.",
   mobile_item: [
-    { id: 1, cantidad_gigabytes: "9GB", precio: 65000 },
-    { id: 2, cantidad_gigabytes: "16GB", precio: 85000 },
-    { id: 3, cantidad_gigabytes: "22GB", precio: 120000 },
+    // Sin Portabilidad (Default & More attractive prices)
+    { id: 1, cantidad_gigabytes: "9GB", precio: 65000, portabilidad: false },
+    { id: 2, cantidad_gigabytes: "16GB", precio: 85000, portabilidad: false },
+    { id: 3, cantidad_gigabytes: "22GB", precio: 120000, portabilidad: false },
+    // Con Portabilidad (Less attractive prices)
+    { id: 4, cantidad_gigabytes: "9GB", precio: 80000, portabilidad: true },
+    { id: 5, cantidad_gigabytes: "16GB", precio: 105000, portabilidad: true },
+    { id: 6, cantidad_gigabytes: "22GB", precio: 140000, portabilidad: true },
   ],
 };
 
